@@ -13,4 +13,4 @@ steps:
     commands:
       - go mod vendor
       - cd cmd
-      - go build jb.go
+      - go build yckms.go
