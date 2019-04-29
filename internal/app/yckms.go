@@ -97,8 +97,8 @@ func SyncLast(url string) error {
 		return err
 	}
 
+	// create show stuct
 	s := show{name: feed.Title, playlist: songs}
-	fmt.Println(s)
 
 	return err
 }
