@@ -46,7 +46,6 @@ func main() {
 		}
 
 		if c.Bool("date") && c.Bool("last") {
-			// TODO
 			fmt.Println("Warning: from, to and last flags set, last will be used")
 		}
 
