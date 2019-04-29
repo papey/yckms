@@ -6,6 +6,14 @@ kind: pipeline
 name: main
 
 steps:
+  - name: test
+    image: golang
+    environment:
+      GO111MODULE: on
+    commands:
+      - go mod vendor
+      - go test github.com/papey/yckms/internal/app
+
   - name: build
     image: golang
     environment:
