@@ -75,7 +75,6 @@ func parsePlaylist(desc string) ([]song, error) {
 		// TRIM, just to be sure
 		song := song{title: strings.Trim(elem[0], " "), artist: strings.Trim(elem[1], " ")}
 		s = append(s, song)
-		fmt.Printf("Artist : %s, Song : %s\n", song.artist, song.title)
 	}
 
 	return s, err
