@@ -1,0 +1,14 @@
+workspace:
+  base: /go
+  path: src/github.com/papey/yckms
+
+kind: pipeline
+name: main
+
+steps:
+  - name: build
+    image: golang
+    commands:
+      - go mod vendor
+      - cd cmd
+      - go build jb.go
