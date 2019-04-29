@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 
+	internal "github.com/papey/yckms/internal/app"
 	"github.com/urfave/cli"
 )
 
@@ -51,8 +52,7 @@ func main() {
 
 		// Flags check
 		if c.Bool("last") {
-			// TODO
-			fmt.Println("TODO: Sync last show")
+			return internal.SyncLast(c.Args().First())
 		}
 
 		// Check dates
