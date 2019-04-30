@@ -49,6 +49,11 @@ func main() {
 			fmt.Println("Warning: from, to and last flags set, last will be used")
 		}
 
+		_, err := internal.AuthToSpotify()
+		if err != nil {
+			return err
+		}
+
 		// Flags check
 		if c.Bool("last") {
 			return internal.SyncLast(c.Args().First())
