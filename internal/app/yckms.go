@@ -99,5 +99,8 @@ func SyncLast(url string) error {
 	// create show stuct
 	_ = show{name: feed.Title, playlist: songs}
 
+	// auth to Spotify
+	_, err = AuthToSpotify()
+
 	return err
 }
