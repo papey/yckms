@@ -12,19 +12,20 @@ func TestParsePlaylist(t *testing.T) {
 <p><br></p>
 <p>Playlist : Bus / I Buried Paul, Nails / Endless Resistance, Sepultura / Territory, Venom / Evilution Devilution, All Pigs Must Die / The Whip, Fidlar / Too Real, Obituary / Slowly We Rot, Wayfarer / Catcher, Waste of Space Orchestra / Seeker's Reflection, Bat / Long Live the Lewd, Witchfinder / Ouija, Gadget /Choice of a Lost Generation</p>`
 
+	artistExpected := "Bus"
+	songExpected := "Territory"
+
 	s, err := parsePlaylist(input)
 	if err != nil {
-		t.Fail()
+		t.FailNow()
 	}
 
-	if s[0].artist != "Bus" {
-		t.Errorf("Expected : Bus, Get : %s", s[0].artist)
-		t.Fail()
+	if s[0].artist != artistExpected {
+		t.Errorf("Expected : %s, Get : %s", artistExpected, s[0].artist)
 	}
 
-	if s[2].title != "Territory" {
-		t.Errorf("Expected : Territory, Get : %s", s[2].title)
-		t.Fail()
+	if s[2].title != songExpected {
+		t.Errorf("Expected : %s, Get : %s", songExpected, s[2].title)
 	}
 
 }
