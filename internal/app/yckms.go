@@ -1,12 +1,17 @@
 package app
 
 import (
+	"bytes"
 	"errors"
-	"fmt"
+	"image/jpeg"
+	"io"
+	"log"
+	"net/http"
 	"regexp"
 	"strings"
 
 	"github.com/mmcdole/gofeed"
+	"github.com/nfnt/resize"
 )
 
 type song struct {
@@ -17,6 +22,52 @@ type show struct {
 	name     string
 	playlist []song
 	desc     string
+	image    io.Reader
+}
+
+// createShow handles creations of show structs
+func createShow(item *gofeed.Item) (*show, error) {
+
+	// pass last show as arg, extract songs from playlist
+	songs, err := parsePlaylist(item.Description)
+	if err != nil {
+		return nil, err
+	}
+
+	img, err := createImage(item.Image.URL)
+	if err != nil {
+		return nil, err
+	}
+
+	// create show stuct
+	return &show{name: item.Title, playlist: songs, desc: item.Published, image: img}, nil
+
+}
+
+// createImage handles show image manipulation
+func createImage(url string) (io.Reader, error) {
+
+	// get image
+	res, _ := http.Get(url)
+	if res.StatusCode != 200 {
+		return nil, errors.New("Error, can't get show image")
+	}
+
+	// decode jpeg into image.Image
+	img, err := jpeg.Decode(res.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	m := resize.Resize(300, 0, img, resize.Lanczos3)
+
+	var b bytes.Buffer
+
+	// write new image to file
+	jpeg.Encode(&b, m, nil)
+
+	return &b, err
+
 }
 
 // parse description and extract playlist
@@ -92,14 +143,8 @@ func SyncLast(url string) error {
 		return err
 	}
 
-	// pass last show as arg, extract songs from playlist
-	songs, err := parsePlaylist(feed.Items[0].Description)
-	if err != nil {
-		return err
-	}
-
-	// create show stuct
-	s := show{name: feed.Items[0].Title, playlist: songs, desc: feed.Items[0].Published}
+	// create a show struct
+	s, err := createShow(feed.Items[0])
 
 	// auth to Spotify
 	client, user, err := AuthToSpotify()
@@ -108,11 +153,17 @@ func SyncLast(url string) error {
 	}
 
 	// create playlist
-	_, err = client.CreatePlaylistForUser(user, s.name, s.desc, true)
+	pl, err := client.CreatePlaylistForUser(user, s.name, s.desc, true)
 	if err != nil {
-		fmt.Println("lol")
+		return err
+	}
+
+	// image setup
+	err = client.SetPlaylistImage(pl.ID, s.image)
+	if err != nil {
 		return err
 	}
 
 	return err
+
 }
