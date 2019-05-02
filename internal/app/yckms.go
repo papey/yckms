@@ -2,6 +2,7 @@ package app
 
 import (
 	"errors"
+	"fmt"
 	"regexp"
 	"strings"
 
@@ -15,6 +16,7 @@ type song struct {
 type show struct {
 	name     string
 	playlist []song
+	desc     string
 }
 
 // parse description and extract playlist
@@ -97,10 +99,20 @@ func SyncLast(url string) error {
 	}
 
 	// create show stuct
-	_ = show{name: feed.Title, playlist: songs}
+	s := show{name: feed.Items[0].Title, playlist: songs, desc: feed.Items[0].Published}
 
 	// auth to Spotify
-	_, _, err = AuthToSpotify()
+	client, user, err := AuthToSpotify()
+	if err != nil {
+		return err
+	}
+
+	// create playlist
+	_, err = client.CreatePlaylistForUser(user, s.name, s.desc, true)
+	if err != nil {
+		fmt.Println("lol")
+		return err
+	}
 
 	return err
 }
