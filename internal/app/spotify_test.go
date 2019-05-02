@@ -1,10 +1,15 @@
 package app
 
 import (
+	"os"
 	"testing"
 )
 
 func TestAuthToSpotify(t *testing.T) {
+
+	if os.Getenv("DRONE") == "true" {
+		t.Skip("Skipping test in CI environment")
+	}
 
 	client, user, err := AuthToSpotify()
 	if err != nil {
