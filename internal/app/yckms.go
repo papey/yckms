@@ -100,7 +100,7 @@ func SyncLast(url string) error {
 	_ = show{name: feed.Title, playlist: songs}
 
 	// auth to Spotify
-	_, err = AuthToSpotify()
+	_, _, err = AuthToSpotify()
 
 	return err
 }

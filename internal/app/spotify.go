@@ -10,18 +10,25 @@ import (
 	"golang.org/x/oauth2/clientcredentials"
 )
 
-// AuthToSpotify is used to auth user to his spotify account
-func AuthToSpotify() (*spotify.Client, error) {
+// Auth contains everything needed to auth on spotify
+type auth struct {
+	secret string
+	id     string
+	user   string
+}
 
-	id, secret, err := getSpotifyFromEnv()
+// AuthToSpotify is used to auth user to his spotify account
+func AuthToSpotify() (*spotify.Client, string, error) {
+
+	creds, err := getSpotifyFromEnv()
 	if err != nil {
-		return nil, err
+		return nil, "", err
 	}
 
 	// Create config object
 	c := &clientcredentials.Config{
-		ClientID:     id,
-		ClientSecret: secret,
+		ClientID:     creds.id,
+		ClientSecret: creds.secret,
 		TokenURL:     spotify.TokenURL,
 	}
 
@@ -34,23 +41,28 @@ func AuthToSpotify() (*spotify.Client, error) {
 	// New client, with token
 	client := spotify.Authenticator{}.NewClient(t)
 
-	return &client, err
+	return &client, creds.user, err
 
 }
 
 // getSpotifyFromEnv is used to check env and get Spotify Auth vars
-func getSpotifyFromEnv() (string, string, error) {
+func getSpotifyFromEnv() (*auth, error) {
 
 	id := os.Getenv("SPOTIFY_ID")
 	if id == "" {
-		return "", "", errors.New("SPOTIFY_ID env var not set")
+		return nil, errors.New("SPOTIFY_ID env var not set")
 	}
 
 	secret := os.Getenv("SPOTIFY_SECRET")
 	if secret == "" {
-		return "", "", errors.New("SPOTIFY_SECRET env var not set")
+		return nil, errors.New("SPOTIFY_SECRET env var not set")
 	}
 
-	return id, secret, nil
+	user := os.Getenv("SPOTIFY_USER")
+	if user == "" {
+		return nil, errors.New("SPOTIFY_USER env var not set")
+	}
+
+	return &auth{id: id, secret: secret, user: user}, nil
 
 }
