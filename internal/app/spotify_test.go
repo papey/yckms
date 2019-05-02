@@ -11,6 +11,10 @@ func TestAuthToSpotify(t *testing.T) {
 		t.Skip("Skipping test in CI environment")
 	}
 
+	if testing.Short() {
+		t.Skip("Skipping test in short mode")
+	}
+
 	client, user, err := AuthToSpotify()
 	if err != nil {
 		t.Fatal(err)
