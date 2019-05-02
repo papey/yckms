@@ -18,7 +18,7 @@ const uri = "http://localhost:8080/callback"
 
 // Global vars user to auth
 var (
-	auth  = spotify.NewAuthenticator(uri, spotify.ScopePlaylistModifyPublic)
+	auth  = spotify.NewAuthenticator(uri, spotify.ScopeImageUpload, spotify.ScopePlaylistModifyPublic)
 	ch    = make(chan *spotify.Client)
 	state = "yckms"
 )
