@@ -5,12 +5,12 @@ import (
 )
 
 func TestParsePlaylist(t *testing.T) {
-	input := `<p>Au programme :</p>
-<p>- Revue de presse : Matthieu</p>
-<p>- Chronique Fidlar : Théo</p>
-<p>- Chronique Waste Of Space Orchestra : Eline</p>
-<p><br></p>
-<p>Playlist : Bus / I Buried Paul, Nails / Endless Resistance, Sepultura / Territory, Venom / Evilution Devilution, All Pigs Must Die / The Whip, Fidlar / Too Real, Obituary / Slowly We Rot, Wayfarer / Catcher, Waste of Space Orchestra / Seeker's Reflection, Bat / Long Live the Lewd, Witchfinder / Ouija, Gadget /Choice of a Lost Generation</p>`
+	input := `Au programme :
+- Revue de presse : Matthieu
+- Chronique Fidlar : Théo
+- Chronique Waste Of Space Orchestra : Eline
+
+Playlist : Bus / I Buried Paul, Nails / Endless Resistance, Sepultura / Territory, Venom / Evilution Devilution, All Pigs Must Die / The Whip, Fidlar / Too Real, Obituary / Slowly We Rot, Wayfarer / Catcher, Waste of Space Orchestra / Seeker's Reflection, Bat / Long Live the Lewd, Witchfinder / Ouija, Gadget /Choice of a Lost Generationi`
 
 	artistExpected := "Bus"
 	songExpected := "Territory"
