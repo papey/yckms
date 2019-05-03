@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 
 	"github.com/zmb3/spotify"
 )
@@ -14,7 +15,7 @@ import (
 // https://github.com/zmb3/spotify/blob/master/examples/authenticate/authcode/authenticate.go
 
 // callback uri
-const uri = "http://localhost:8080/callback"
+var uri = fmt.Sprintf("http://localhost:%d/callback", getCallbackPort())
 
 // Global vars user to auth
 var (
@@ -22,6 +23,31 @@ var (
 	ch    = make(chan *spotify.Client)
 	state = "yckms"
 )
+
+func getCallbackPort() int {
+
+	// sane default
+	const DefaultCallbackPort = 8080
+	// get data
+	p := os.Getenv("HTTP_CALLBACK_PORT")
+
+	// if not empty
+	if p != "" {
+		// try convert to int
+		port, err := strconv.Atoi(p)
+		// if fail, fallback to default
+		if err != nil {
+			fmt.Printf("Warning, port %s is not a number, default (%d) is used", p, DefaultCallbackPort)
+			return DefaultCallbackPort
+		}
+
+		// if ok, return port
+		return port
+
+	}
+
+	return DefaultCallbackPort
+}
 
 // AuthToSpotify is used to auth user to his spotify account
 func AuthToSpotify() (*spotify.Client, string, error) {
