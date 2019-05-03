@@ -31,7 +31,7 @@ type show struct {
 func createShow(item *gofeed.Item) (*show, error) {
 
 	// pass last show as arg, extract songs from playlist
-	songs, err := parsePlaylist(item.Description)
+	songs, err := parsePlaylist(item.ITunesExt.Summary)
 	if err != nil {
 		return nil, err
 	}
@@ -106,7 +106,7 @@ func parsePlaylist(desc string) ([]song, error) {
 
 	// remove trailing <p> and </p>
 	// prepare regex
-	reg, err := regexp.Compile(`<p>Playlist : (.+)</p>`)
+	reg, err := regexp.Compile(`(?:Playlist|PLAYLIST|Setlist) : (.+)`)
 	if err != nil {
 		return nil, err
 	}
