@@ -6,6 +6,20 @@ kind: pipeline
 name: main
 
 steps:
+  - name: test
+    image: golang
+    environment:
+      GO111MODULE: on
+      SPOTIFY_ID:
+        from_secret: SPOTIFY_ID
+      SPOTIFY_USER:
+        from_secret: SPOTIFY_USER
+      SPOTIFY_SECRET:
+        from_secret: SPOTIFY_SECRET
+    commands:
+      - go mod vendor
+      - go test github.com/papey/yckms/internal/app
+
   - name: build
     image: golang
     environment:
