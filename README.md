@@ -56,3 +56,7 @@ If no flag is provided, sync all
 ## Licence
 
 See LICENCE file
+
+## Build info
+
+See [https://drone.github.papey.fr/papey/yckms/](https://drone.github.papey.fr/papey/yckms/)
