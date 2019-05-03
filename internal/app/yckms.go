@@ -36,6 +36,11 @@ func createShow(item *gofeed.Item) (*show, error) {
 		return nil, err
 	}
 
+	if songs == nil {
+		fmt.Printf("Warning : no playlist to parse in show %s\n", item.Title)
+		return nil, nil
+	}
+
 	img, err := createImage(item.Image.URL)
 	if err != nil {
 		return nil, err
@@ -102,6 +107,10 @@ func parsePlaylist(desc string) ([]song, error) {
 	split := strings.Split(desc, "\n")
 
 	// pltf is the last element is the playlist, but not formated (1)
+	if len(split) == 0 {
+		return nil, nil
+	}
+
 	plnf := split[len(split)-1]
 
 	// remove trailing <p> and </p>
@@ -114,7 +123,7 @@ func parsePlaylist(desc string) ([]song, error) {
 	// pl contain the string playlist (1)
 	pl := reg.FindSubmatch([]byte(plnf))
 	if pl == nil {
-		return nil, errors.New("No match found in show description")
+		return nil, nil
 	}
 
 	// convert to string
@@ -127,8 +136,10 @@ func parsePlaylist(desc string) ([]song, error) {
 	for _, e := range songs {
 		elem := strings.Split(e, "/")
 		// TRIM, just to be sure
-		song := song{title: strings.Trim(elem[1], " "), artist: strings.Trim(elem[0], " ")}
-		s = append(s, song)
+		if len(elem) >= 2 {
+			song := song{title: strings.Trim(elem[1], " "), artist: strings.Trim(elem[0], " ")}
+			s = append(s, song)
+		}
 	}
 
 	return s, err
