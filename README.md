@@ -16,7 +16,21 @@ Build
 
 ## Usage
 
-YCKMS takes one args and multiple flags
+### Setup
+
+#### Oauth
+
+1. Create a YCKMS application on [Spotify](https://developer.spotify.com/my-applications/) : https://developer.spotify.com/my-applications/
+2. Set `http://localhost:8080` as callback url
+3. Copy SPOTIFY_ID and SPOTIFY_SECRET
+
+### Args, env and flags
+
+YCKMS takes one arg, multiple env var and multiple flags
+
+- Env vars :
+    - SPOTIFY_ID : from oauth setup (3)
+    - SPOTIFY_SECRET : from oauth setup (3)
 
 - Arguments :
     - The URL to the podcast RSS Feed (eg: https://feed.ausha.co/owAEhJ0qOPkb)
