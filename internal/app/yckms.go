@@ -31,9 +31,14 @@ type show struct {
 func createShow(item *gofeed.Item) (*show, error) {
 
 	// pass last show as arg, extract songs from playlist
-	songs, err := parsePlaylist(item.Description)
+	songs, err := parsePlaylist(item.ITunesExt.Summary)
 	if err != nil {
 		return nil, err
+	}
+
+	if songs == nil {
+		fmt.Printf("Warning : no playlist to parse in show %s\n", item.Title)
+		return nil, nil
 	}
 
 	img, err := createImage(item.Image.URL)
@@ -102,11 +107,15 @@ func parsePlaylist(desc string) ([]song, error) {
 	split := strings.Split(desc, "\n")
 
 	// pltf is the last element is the playlist, but not formated (1)
+	if len(split) == 0 {
+		return nil, nil
+	}
+
 	plnf := split[len(split)-1]
 
 	// remove trailing <p> and </p>
 	// prepare regex
-	reg, err := regexp.Compile(`<p>Playlist : (.+)</p>`)
+	reg, err := regexp.Compile(`(?:Playlist|PLAYLIST|Setlist) : (.+)`)
 	if err != nil {
 		return nil, err
 	}
@@ -114,7 +123,7 @@ func parsePlaylist(desc string) ([]song, error) {
 	// pl contain the string playlist (1)
 	pl := reg.FindSubmatch([]byte(plnf))
 	if pl == nil {
-		return nil, errors.New("No match found in show description")
+		return nil, nil
 	}
 
 	// convert to string
@@ -127,8 +136,10 @@ func parsePlaylist(desc string) ([]song, error) {
 	for _, e := range songs {
 		elem := strings.Split(e, "/")
 		// TRIM, just to be sure
-		song := song{title: strings.Trim(elem[1], " "), artist: strings.Trim(elem[0], " ")}
-		s = append(s, song)
+		if len(elem) >= 2 {
+			song := song{title: strings.Trim(elem[1], " "), artist: strings.Trim(elem[0], " ")}
+			s = append(s, song)
+		}
 	}
 
 	return s, err
@@ -161,8 +172,10 @@ func createPlaylist(s *show, user string, client *spotify.Client) error {
 	return nil
 }
 
-// SyncLast will sync last show
-func SyncLast(url string) error {
+// Sync will sync last show
+func Sync(url string, last bool) error {
+
+	var shows []*show
 
 	// get show
 	fp := gofeed.NewParser()
@@ -171,8 +184,35 @@ func SyncLast(url string) error {
 		return err
 	}
 
-	// create a show struct
-	s, err := createShow(feed.Items[0])
+	// last episode only
+	if last {
+		// create a show struct
+		s, err := createShow(feed.Items[0])
+		if err != nil {
+			return err
+		}
+
+		// ensure s is not nil
+		if s != nil {
+			// add last show to an array of one show
+			shows = append(shows, s)
+		}
+
+	} else {
+		// all shows, range over
+		for _, e := range feed.Items {
+			// create show
+			s, err := createShow(e)
+			if err != nil {
+				return err
+			}
+
+			// append only if it's ok
+			if s != nil {
+				shows = append(shows, s)
+			}
+		}
+	}
 
 	// auth to Spotify
 	client, user, err := AuthToSpotify()
@@ -180,10 +220,12 @@ func SyncLast(url string) error {
 		return err
 	}
 
-	// create playlist
-	err = createPlaylist(s, user, client)
-	if err != nil {
-		return err
+	for _, elem := range shows {
+		// create playlist
+		err = createPlaylist(elem, user, client)
+		if err != nil {
+			return err
+		}
 	}
 
 	return err

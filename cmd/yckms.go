@@ -51,7 +51,7 @@ func main() {
 
 		// Flags check
 		if c.Bool("last") {
-			return internal.SyncLast(c.Args().First())
+			return internal.Sync(c.Args().First(), true)
 		}
 
 		// Check dates
@@ -65,8 +65,7 @@ func main() {
 		}
 
 		if !c.Bool("last") && !c.Bool("date") {
-			// TODO
-			fmt.Println("TODO: Sync all")
+			return internal.Sync(c.Args().First(), false)
 		}
 
 		return nil
