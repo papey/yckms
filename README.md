@@ -36,7 +36,7 @@ YCKMS takes one arg, multiple env var and multiple flags
     - The URL to the podcast [RSS Feed](https://feed.ausha.co/owAEhJ0qOPkb) (eg: https://feed.ausha.co/owAEhJ0qOPkb)
 
 - Flags :
-    - --last, -l : sync last show (TODO)
+    - --last, -l : sync last show
     - --date, -d : sync show from date --from to date --to (format MM-DD-YYYY) (TODO)
 
 If no flag is provided, sync all (TODO)
