@@ -1,5 +1,7 @@
 # YCKMS
 
+[![Build Status](https://drone.github.papey.fr/api/badges/papey/yckms/status.svg)](https://drone.github.papey.fr/papey/yckms)
+
 Small go app to sync playlists from [YCKM](https://podcast.ausha.co/yckm)
 french metal podcast show to Spotify
 
@@ -39,7 +41,7 @@ YCKMS takes one arg, multiple env var and multiple flags
     - --last, -l : sync last show
     - --date, -d : sync show from date --from to date --to (format MM-DD-YYYY) (TODO)
 
-If no flag is provided, sync all (TODO)
+If no flag is provided, sync all
 
 ### Usage example
 
@@ -54,3 +56,7 @@ If no flag is provided, sync all (TODO)
 ## Licence
 
 See LICENCE file
+
+## Build info
+
+See [https://drone.github.papey.fr/papey/yckms/](https://drone.github.papey.fr/papey/yckms/)
