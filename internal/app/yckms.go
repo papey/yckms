@@ -161,8 +161,10 @@ func createPlaylist(s *show, user string, client *spotify.Client) error {
 	return nil
 }
 
-// SyncLast will sync last show
-func SyncLast(url string) error {
+// Sync will sync last show
+func Sync(url string, last bool) error {
+
+	var shows []*show
 
 	// get show
 	fp := gofeed.NewParser()
@@ -171,8 +173,19 @@ func SyncLast(url string) error {
 		return err
 	}
 
-	// create a show struct
-	s, err := createShow(feed.Items[0])
+	if last {
+		// create a show struct
+		s, err := createShow(feed.Items[0])
+		if err != nil {
+			return err
+		}
+
+		// ensure s is not nil
+		if s != nil {
+			shows = append(shows, s)
+		}
+
+	}
 
 	// auth to Spotify
 	client, user, err := AuthToSpotify()
@@ -180,10 +193,12 @@ func SyncLast(url string) error {
 		return err
 	}
 
-	// create playlist
-	err = createPlaylist(s, user, client)
-	if err != nil {
-		return err
+	for _, elem := range shows {
+		// create playlist
+		err = createPlaylist(elem, user, client)
+		if err != nil {
+			return err
+		}
 	}
 
 	return err

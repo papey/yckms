@@ -51,7 +51,7 @@ func main() {
 
 		// Flags check
 		if c.Bool("last") {
-			return internal.SyncLast(c.Args().First())
+			return internal.Sync(c.Args().First(), true)
 		}
 
 		// Check dates
