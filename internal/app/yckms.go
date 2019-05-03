@@ -184,6 +184,7 @@ func Sync(url string, last bool) error {
 		return err
 	}
 
+	// last episode only
 	if last {
 		// create a show struct
 		s, err := createShow(feed.Items[0])
@@ -193,9 +194,24 @@ func Sync(url string, last bool) error {
 
 		// ensure s is not nil
 		if s != nil {
+			// add last show to an array of one show
 			shows = append(shows, s)
 		}
 
+	} else {
+		// all shows, range over
+		for _, e := range feed.Items {
+			// create show
+			s, err := createShow(e)
+			if err != nil {
+				return err
+			}
+
+			// append only if it's ok
+			if s != nil {
+				shows = append(shows, s)
+			}
+		}
 	}
 
 	// auth to Spotify

@@ -65,8 +65,7 @@ func main() {
 		}
 
 		if !c.Bool("last") && !c.Bool("date") {
-			// TODO
-			fmt.Println("TODO: Sync all")
+			return internal.Sync(c.Args().First(), false)
 		}
 
 		return nil
