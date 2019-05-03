@@ -33,7 +33,7 @@ YCKMS takes one arg, multiple env var and multiple flags
     - SPOTIFY_SECRET : from oauth setup (3)
 
 - Arguments :
-    - The URL to the podcast RSS Feed (eg: https://feed.ausha.co/owAEhJ0qOPkb)
+    - The URL to the podcast [RSS Feed](https://feed.ausha.co/owAEhJ0qOPkb) (eg: https://feed.ausha.co/owAEhJ0qOPkb)
 
 - Flags :
     - --last, -l : sync last show (TODO)
