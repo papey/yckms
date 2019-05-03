@@ -164,6 +164,12 @@ func SyncLast(url string) error {
 		return err
 	}
 
+	// add songs
+	err = addSongsToPlaylist(s.playlist, pl, client)
+	if err != nil {
+		return err
+	}
+
 	return err
 
 }
