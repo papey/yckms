@@ -41,6 +41,16 @@ YCKMS takes one arg, multiple env var and multiple flags
 
 If no flag is provided, sync all (TODO)
 
+### Usage example
+
+    # Launch
+    SPOTIFY_ID=XXXX SPOTIFY_SECRET=YYYY ./yckms -l https://feed.ausha.co/owAEhJ0qOPkb
+    # Waiting for oauth stuff, go to url to oauth
+    Please log in to Spotify by visiting the following page : https://accounts.spotify.com/authorize?client_id=blablablalbalablbala
+    # Accept access to user profile and data
+    # Ok, everything is fine
+    You are logged in as : morty
+
 ## Licence
 
 See LICENCE file
