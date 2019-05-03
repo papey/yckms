@@ -3,6 +3,7 @@ package app
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"image/jpeg"
 	"io"
 	"log"
@@ -154,6 +155,8 @@ func createPlaylist(s *show, user string, client *spotify.Client) error {
 	if err != nil {
 		return err
 	}
+
+	fmt.Printf("Playlist for show '%s' created, see %s\n", s.name, pl.URI)
 
 	return nil
 }
