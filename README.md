@@ -1,5 +1,7 @@
 # YCKMS
 
+[![Build Status](https://drone.github.papey.fr/api/badges/papey/yckms/status.svg)](https://drone.github.papey.fr/papey/yckms)
+
 Small go app to sync playlists from [YCKM](https://podcast.ausha.co/yckm)
 french metal podcast show to Spotify
 
