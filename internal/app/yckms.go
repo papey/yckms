@@ -12,6 +12,7 @@ import (
 
 	"github.com/mmcdole/gofeed"
 	"github.com/nfnt/resize"
+	"github.com/zmb3/spotify"
 )
 
 type song struct {
@@ -133,6 +134,30 @@ func parsePlaylist(desc string) ([]song, error) {
 
 }
 
+// createPlaylist is used to wrap all playlist things
+func createPlaylist(s *show, user string, client *spotify.Client) error {
+
+	// create playlist
+	pl, err := client.CreatePlaylistForUser(user, s.name, s.desc, true)
+	if err != nil {
+		return err
+	}
+
+	// image setup
+	err = client.SetPlaylistImage(pl.ID, s.image)
+	if err != nil {
+		return err
+	}
+
+	// add songs
+	err = addSongsToPlaylist(s.playlist, pl, client)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // SyncLast will sync last show
 func SyncLast(url string) error {
 
@@ -153,19 +178,7 @@ func SyncLast(url string) error {
 	}
 
 	// create playlist
-	pl, err := client.CreatePlaylistForUser(user, s.name, s.desc, true)
-	if err != nil {
-		return err
-	}
-
-	// image setup
-	err = client.SetPlaylistImage(pl.ID, s.image)
-	if err != nil {
-		return err
-	}
-
-	// add songs
-	err = addSongsToPlaylist(s.playlist, pl, client)
+	err = createPlaylist(s, user, client)
 	if err != nil {
 		return err
 	}
