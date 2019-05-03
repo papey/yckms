@@ -1,6 +1,7 @@
 # YCKMS
 
-Small go app to sync playlists from YCKM french metal podcast to Spotify
+Small go app to sync playlists from [YCKM](https://podcast.ausha.co/yckm)
+french metal podcast show to Spotify
 
 ## Build
 
