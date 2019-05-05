@@ -8,7 +8,9 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"time"
 
+	"github.com/araddon/dateparse"
 	"github.com/mmcdole/gofeed"
 	"github.com/nfnt/resize"
 	"github.com/papey/yckms/internal/spoopify"
@@ -32,6 +34,58 @@ type show struct {
 	image io.Reader
 }
 
+type interval struct {
+	from time.Time
+	to   time.Time
+}
+
+// filterFeed apply date filter on a feed
+func filterFeed(feed *gofeed.Feed, from string, to string) ([]*gofeed.Item, error) {
+
+	var filtered []*gofeed.Item
+
+	d, err := parseDates(from, to)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, e := range feed.Items {
+		t, err := dateparse.ParseAny(e.Published)
+		if err != nil {
+			return nil, err
+		}
+
+		if t.Before(d.to) && t.After(d.from) {
+			filtered = append(filtered, e)
+		}
+
+	}
+
+	return filtered, err
+}
+
+// parseDates takes from and to dates as string and convert them to date struct
+func parseDates(from string, to string) (*interval, error) {
+
+	format := "2006-01-02"
+
+	f, err := time.Parse(format, from)
+	if err != nil {
+		return nil, err
+	}
+	t, err := time.Parse(format, to)
+	if err != nil {
+		return nil, err
+	}
+
+	if f.After(t) {
+		return nil, fmt.Errorf("Error: %s (from) is after %s (to)", from, to)
+	}
+
+	return &interval{from: f, to: t}, nil
+
+}
+
 // createShow handles creations of show structs
 func createShow(item *gofeed.Item) (*show, error) {
 
@@ -53,6 +107,50 @@ func createShow(item *gofeed.Item) (*show, error) {
 
 	// create show stuct
 	return &show{name: item.Title, playlist: songs, desc: item.Published, image: img}, nil
+
+}
+
+// createShows wrap stuff to create and filter show structs
+func createShows(feed *gofeed.Feed, last bool, from string, to string) ([]*show, error) {
+
+	// local vars
+	var shows []*show
+	var items []*gofeed.Item
+	var err error
+
+	// if last, items contains only the last show
+	if last {
+		items = append(items, feed.Items[0])
+	} else {
+		// if last is false, fallback to all
+		// remove if dates set, filter
+		if from != "" && to != "" {
+			items, err = filterFeed(feed, from, to)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			// else, get all items
+			items = feed.Items
+		}
+
+	}
+
+	// all shows, range over
+	for _, e := range items {
+		// create show
+		s, err := createShow(e)
+		if err != nil {
+			return nil, err
+		}
+
+		// append only if it's ok
+		if s != nil {
+			shows = append(shows, s)
+		}
+	}
+
+	return shows, nil
 
 }
 
@@ -88,8 +186,9 @@ func createImage(url string) (io.Reader, error) {
 // - filter
 // - Spotify auth
 // - create playlist(s)
-func Sync(url string, last bool) error {
+func Sync(url string, last bool, from string, to string) error {
 
+	// show episodes, YCKMS format
 	var shows []*show
 
 	// get show
@@ -99,34 +198,9 @@ func Sync(url string, last bool) error {
 		return err
 	}
 
-	// last episode only
-	if last {
-		// create a show struct
-		s, err := createShow(feed.Items[0])
-		if err != nil {
-			return err
-		}
-
-		// ensure s is not nil
-		if s != nil {
-			// add last show to an array of one show
-			shows = append(shows, s)
-		}
-
-	} else {
-		// all shows, range over
-		for _, e := range feed.Items {
-			// create show
-			s, err := createShow(e)
-			if err != nil {
-				return err
-			}
-
-			// append only if it's ok
-			if s != nil {
-				shows = append(shows, s)
-			}
-		}
+	shows, err = createShows(feed, last, from, to)
+	if err != nil {
+		return err
 	}
 
 	// auth to Spotify
