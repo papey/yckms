@@ -8,6 +8,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/mmcdole/gofeed"
 	"github.com/nfnt/resize"
@@ -30,6 +31,33 @@ type show struct {
 	desc string
 	// image used as Spotify playlist image
 	image io.Reader
+}
+
+type interval struct {
+	from time.Time
+	to   time.Time
+}
+
+// parseDates takes from and to dates as string and convert them to date struct
+func parseDates(from string, to string) (*interval, error) {
+
+	format := "2006-01-02"
+
+	f, err := time.Parse(format, from)
+	if err != nil {
+		return nil, err
+	}
+	t, err := time.Parse(format, to)
+	if err != nil {
+		return nil, err
+	}
+
+	if f.After(t) {
+		return nil, fmt.Errorf("Error: %s (from) is after %s (to)", from, to)
+	}
+
+	return &interval{from: f, to: t}, nil
+
 }
 
 // createShow handles creations of show structs

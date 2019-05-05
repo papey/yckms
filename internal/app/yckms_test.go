@@ -14,3 +14,15 @@ func TestCreateImage(t *testing.T) {
 	}
 
 }
+
+func TestParseDates(t *testing.T) {
+
+	from := "2019-01-11"
+	to := "2019-04-01"
+
+	_, err := parseDates(from, to)
+	if err != nil {
+		t.Error(err)
+	}
+
+}
