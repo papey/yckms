@@ -13,7 +13,7 @@ import (
 
 	"github.com/mmcdole/gofeed"
 	"github.com/nfnt/resize"
-	"github.com/zmb3/spotify"
+	"github.com/papey/yckms/internal/spoopify"
 )
 
 type song struct {
@@ -215,7 +215,7 @@ func Sync(url string, last bool) error {
 	}
 
 	// auth to Spotify
-	client, user, err := AuthToSpotify()
+	client, user, err := spoopify.AuthToSpotify()
 	if err != nil {
 		return err
 	}
