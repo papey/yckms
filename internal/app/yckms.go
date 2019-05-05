@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/araddon/dateparse"
 	"github.com/mmcdole/gofeed"
 	"github.com/nfnt/resize"
 	"github.com/papey/yckms/internal/spoopify"
@@ -36,6 +37,32 @@ type show struct {
 type interval struct {
 	from time.Time
 	to   time.Time
+}
+
+// filterFeed apply date filter on a feed
+func filterFeed(feed *gofeed.Feed, from string, to string) ([]*gofeed.Item, error) {
+
+	var filtered []*gofeed.Item
+
+	d, err := parseDates(from, to)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, e := range feed.Items {
+		t, err := dateparse.ParseAny(e.Published)
+		if err != nil {
+			return nil, err
+		}
+
+		if t.Before(d.to) && t.After(d.from) {
+			fmt.Println(filtered)
+			filtered = append(filtered, e)
+		}
+
+	}
+
+	return filtered, err
 }
 
 // parseDates takes from and to dates as string and convert them to date struct
@@ -116,8 +143,9 @@ func createImage(url string) (io.Reader, error) {
 // - filter
 // - Spotify auth
 // - create playlist(s)
-func Sync(url string, last bool) error {
+func Sync(url string, last bool, from string, to string) error {
 
+	// show episodes, YCKMS format
 	var shows []*show
 
 	// get show
@@ -142,8 +170,22 @@ func Sync(url string, last bool) error {
 		}
 
 	} else {
+
+		// show episodes, goFeed format
+		var items []*gofeed.Item
+
+		// remove unwanted show if needed
+		if from != "" && to != "" {
+			items, err = filterFeed(feed, from, to)
+			if err != nil {
+				return err
+			}
+		} else {
+			items = feed.Items
+		}
+
 		// all shows, range over
-		for _, e := range feed.Items {
+		for _, e := range items {
 			// create show
 			s, err := createShow(e)
 			if err != nil {

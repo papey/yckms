@@ -51,21 +51,20 @@ func main() {
 
 		// Flags check
 		if c.Bool("last") {
-			return internal.Sync(c.Args().First(), true)
+			return internal.Sync(c.Args().First(), true, "", "")
 		}
 
 		// Check dates
 		if c.Bool("date") {
 			if c.String("from") != "" && c.String("to") != "" {
-				// TODO
-				fmt.Printf("TODO: Sync show from %s to %s\n", c.String("from"), c.String("to"))
+				return internal.Sync(c.Args().First(), false, c.String("from"), c.String("to"))
 			} else {
 				log.Fatal("Error: one of the dates is missing")
 			}
 		}
 
 		if !c.Bool("last") && !c.Bool("date") {
-			return internal.Sync(c.Args().First(), false)
+			return internal.Sync(c.Args().First(), false, "", "")
 		}
 
 		return nil
