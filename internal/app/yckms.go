@@ -14,15 +14,22 @@ import (
 	"github.com/papey/yckms/internal/spoopify"
 )
 
+// Song struct
 type song struct {
-	title  string
+	// song title
+	title string
+	// song artist
 	artist string
 }
 type show struct {
-	name     string
+	// podcast title/name
+	name string
+	// array of songs played during show
 	playlist []song
-	desc     string
-	image    io.Reader
+	// small description used as Spotify playlist description
+	desc string
+	// image used as Spotify playlist image
+	image io.Reader
 }
 
 // createShow handles creations of show structs
@@ -75,7 +82,12 @@ func createImage(url string) (io.Reader, error) {
 
 }
 
-// Sync will sync last show
+// Sync is the most important function of the app
+// takes url, and params from cli and exec :
+// - get RSS feed
+// - filter
+// - Spotify auth
+// - create playlist(s)
 func Sync(url string, last bool) error {
 
 	var shows []*show
@@ -123,6 +135,7 @@ func Sync(url string, last bool) error {
 		return err
 	}
 
+	// for all shows
 	for _, elem := range shows {
 		// create playlist
 		err = createPlaylist(elem, user, client)
