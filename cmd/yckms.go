@@ -22,11 +22,11 @@ func main() {
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:  "to, t",
-			Usage: "Sync podcast to date mm-dd-yyyy",
+			Usage: "Sync podcast to date YYYY-MM-DD",
 		},
 		cli.StringFlag{
 			Name:  "from, f",
-			Usage: "Sync podcast from date mm-dd-yyyy",
+			Usage: "Sync podcast from date YYYY-MM-DD",
 		},
 		cli.BoolFlag{
 			Name:  "date, d",
