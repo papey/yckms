@@ -56,7 +56,6 @@ func filterFeed(feed *gofeed.Feed, from string, to string) ([]*gofeed.Item, erro
 		}
 
 		if t.Before(d.to) && t.After(d.from) {
-			fmt.Println(filtered)
 			filtered = append(filtered, e)
 		}
 
