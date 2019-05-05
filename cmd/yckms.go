@@ -16,17 +16,17 @@ func main() {
 	// Basic config
 	app.Name = "YCKMS"
 	app.Usage = "Sync playlists from YCKM podcast to Spotify"
-	app.Version = "0.0.1"
+	app.Version = "0.0.4"
 
 	// Flags
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:  "to, t",
-			Usage: "Sync podcast to date mm-dd-yyyy",
+			Usage: "Sync podcast to date YYYY-MM-DD",
 		},
 		cli.StringFlag{
 			Name:  "from, f",
-			Usage: "Sync podcast from date mm-dd-yyyy",
+			Usage: "Sync podcast from date YYYY-MM-DD",
 		},
 		cli.BoolFlag{
 			Name:  "date, d",
@@ -58,9 +58,8 @@ func main() {
 		if c.Bool("date") {
 			if c.String("from") != "" && c.String("to") != "" {
 				return internal.Sync(c.Args().First(), false, c.String("from"), c.String("to"))
-			} else {
-				log.Fatal("Error: one of the dates is missing")
 			}
+			log.Fatal("Error: one of the dates is missing")
 		}
 
 		if !c.Bool("last") && !c.Bool("date") {

@@ -40,7 +40,7 @@ YCKMS takes one arg, multiple env var and multiple flags
 
 - Flags :
     - --last, -l : sync last show
-    - --date, -d : sync show from date --from to date --to (format MM-DD-YYYY) (TODO)
+    - --date, -d : sync show from date --from to date --to (format YYYY-MM-DD)
 
 If no flag is provided, sync all
 
