@@ -110,6 +110,50 @@ func createShow(item *gofeed.Item) (*show, error) {
 
 }
 
+// createShows wrap stuff to create and filter show structs
+func createShows(feed *gofeed.Feed, last bool, from string, to string) ([]*show, error) {
+
+	// local vars
+	var shows []*show
+	var items []*gofeed.Item
+	var err error
+
+	// if last, items contains only the last show
+	if last {
+		items = append(items, feed.Items[0])
+	} else {
+		// if last is false, fallback to all
+		// remove if dates set, filter
+		if from != "" && to != "" {
+			items, err = filterFeed(feed, from, to)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			// else, get all items
+			items = feed.Items
+		}
+
+	}
+
+	// all shows, range over
+	for _, e := range items {
+		// create show
+		s, err := createShow(e)
+		if err != nil {
+			return nil, err
+		}
+
+		// append only if it's ok
+		if s != nil {
+			shows = append(shows, s)
+		}
+	}
+
+	return shows, nil
+
+}
+
 // createImage handles show image manipulation
 func createImage(url string) (io.Reader, error) {
 
@@ -154,48 +198,9 @@ func Sync(url string, last bool, from string, to string) error {
 		return err
 	}
 
-	// last episode only
-	if last {
-		// create a show struct
-		s, err := createShow(feed.Items[0])
-		if err != nil {
-			return err
-		}
-
-		// ensure s is not nil
-		if s != nil {
-			// add last show to an array of one show
-			shows = append(shows, s)
-		}
-
-	} else {
-
-		// show episodes, goFeed format
-		var items []*gofeed.Item
-
-		// remove unwanted show if needed
-		if from != "" && to != "" {
-			items, err = filterFeed(feed, from, to)
-			if err != nil {
-				return err
-			}
-		} else {
-			items = feed.Items
-		}
-
-		// all shows, range over
-		for _, e := range items {
-			// create show
-			s, err := createShow(e)
-			if err != nil {
-				return err
-			}
-
-			// append only if it's ok
-			if s != nil {
-				shows = append(shows, s)
-			}
-		}
+	shows, err = createShows(feed, last, from, to)
+	if err != nil {
+		return err
 	}
 
 	// auth to Spotify
