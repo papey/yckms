@@ -8,23 +8,28 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"regexp"
-	"strings"
 
 	"github.com/mmcdole/gofeed"
 	"github.com/nfnt/resize"
-	"github.com/zmb3/spotify"
+	"github.com/papey/yckms/internal/spoopify"
 )
 
+// Song struct
 type song struct {
-	title  string
+	// song title
+	title string
+	// song artist
 	artist string
 }
 type show struct {
-	name     string
+	// podcast title/name
+	name string
+	// array of songs played during show
 	playlist []song
-	desc     string
-	image    io.Reader
+	// small description used as Spotify playlist description
+	desc string
+	// image used as Spotify playlist image
+	image io.Reader
 }
 
 // createShow handles creations of show structs
@@ -77,102 +82,12 @@ func createImage(url string) (io.Reader, error) {
 
 }
 
-// parse description and extract playlist
-// Input exemple :
-// 		<p>Au programme :</p>
-// 		<p>- Revue de presse : Matthieu</p>
-// 		<p>- Chronique Fidlar : Théo</p>
-// 		<p>- Chronique Waste Of Space Orchestra : Eline</p>
-// 		<p><br></p>
-// 		<p>Playlist : Bus / I Buried Paul, Nails / Endless Resistance, Sepultura /
-// 		Territory, Venom / Evilution Devilution, All Pigs Must Die / The Whip, Fidlar
-// 		/ Too Real, Obituary / Slowly We Rot, Wayfarer / Catcher, Waste of Space
-// 		Orchestra / Seeker's Reflection, Bat / Long Live the Lewd, Witchfinder /
-// 		Ouija, Gadget /Choice of a Lost Generation</p>
-// First step (1) :
-// 		Bus / I Buried Paul, Nails / Endless Resistance, Sepultura /
-// 		Territory, Venom / Evilution Devilution, All Pigs Must Die / The Whip, Fidlar
-// 		/ Too Real, Obituary / Slowly We Rot, Wayfarer / Catcher, Waste of Space
-// 		Orchestra / Seeker's Reflection, Bat / Long Live the Lewd, Witchfinder /
-// 		Ouija, Gadget /Choice of a Lost Generation
-// Second step (2) :
-// 		An array containing each combo Artist / Song
-// Third step (3) :
-//		A song object
-func parsePlaylist(desc string) ([]song, error) {
-
-	var s []song
-
-	// Split on carriage return
-	split := strings.Split(desc, "\n")
-
-	// pltf is the last element is the playlist, but not formated (1)
-	if len(split) == 0 {
-		return nil, nil
-	}
-
-	plnf := split[len(split)-1]
-
-	// remove trailing <p> and </p>
-	// prepare regex
-	reg, err := regexp.Compile(`(?:Playlist|PLAYLIST|Setlist) : (.+)`)
-	if err != nil {
-		return nil, err
-	}
-
-	// pl contain the string playlist (1)
-	pl := reg.FindSubmatch([]byte(plnf))
-	if pl == nil {
-		return nil, nil
-	}
-
-	// convert to string
-	list := string(pl[1])
-
-	// Split by ", " (2)
-	songs := strings.Split(list, ", ")
-
-	// for each song
-	for _, e := range songs {
-		elem := strings.Split(e, "/")
-		// TRIM, just to be sure
-		if len(elem) >= 2 {
-			song := song{title: strings.Trim(elem[1], " "), artist: strings.Trim(elem[0], " ")}
-			s = append(s, song)
-		}
-	}
-
-	return s, err
-
-}
-
-// createPlaylist is used to wrap all playlist things
-func createPlaylist(s *show, user string, client *spotify.Client) error {
-
-	// create playlist
-	pl, err := client.CreatePlaylistForUser(user, s.name, s.desc, true)
-	if err != nil {
-		return err
-	}
-
-	// image setup
-	err = client.SetPlaylistImage(pl.ID, s.image)
-	if err != nil {
-		return err
-	}
-
-	// add songs
-	err = addSongsToPlaylist(s.playlist, pl, client)
-	if err != nil {
-		return err
-	}
-
-	fmt.Printf("Playlist for show '%s' created, see %s\n", s.name, pl.URI)
-
-	return nil
-}
-
-// Sync will sync last show
+// Sync is the most important function of the app
+// takes url, and params from cli and exec :
+// - get RSS feed
+// - filter
+// - Spotify auth
+// - create playlist(s)
 func Sync(url string, last bool) error {
 
 	var shows []*show
@@ -215,11 +130,12 @@ func Sync(url string, last bool) error {
 	}
 
 	// auth to Spotify
-	client, user, err := AuthToSpotify()
+	client, user, err := spoopify.AuthToSpotify()
 	if err != nil {
 		return err
 	}
 
+	// for all shows
 	for _, elem := range shows {
 		// create playlist
 		err = createPlaylist(elem, user, client)
