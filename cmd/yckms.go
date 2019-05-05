@@ -58,9 +58,8 @@ func main() {
 		if c.Bool("date") {
 			if c.String("from") != "" && c.String("to") != "" {
 				return internal.Sync(c.Args().First(), false, c.String("from"), c.String("to"))
-			} else {
-				log.Fatal("Error: one of the dates is missing")
 			}
+			log.Fatal("Error: one of the dates is missing")
 		}
 
 		if !c.Bool("last") && !c.Bool("date") {
