@@ -42,7 +42,7 @@ func main() {
 	app.Action = func(c *cli.Context) error {
 		// Args check
 		if c.NArg() != 1 {
-			log.Fatal("Error, RSS feed URL argument is missing")
+			log.Fatal("Error: RSS feed URL argument is missing")
 		}
 
 		if c.Bool("date") && c.Bool("last") {
@@ -60,7 +60,7 @@ func main() {
 				// TODO
 				fmt.Printf("TODO: Sync show from %s to %s\n", c.String("from"), c.String("to"))
 			} else {
-				log.Fatal("Error, one of the dates is missing")
+				log.Fatal("Error: one of the dates is missing")
 			}
 		}
 

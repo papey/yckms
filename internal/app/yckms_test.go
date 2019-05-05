@@ -11,7 +11,7 @@ func TestCreateImage(t *testing.T) {
 
 	_, err := createImage(url)
 	if err != nil {
-		t.Error("Can't create image")
+		t.Error("Error: Can't create image")
 	}
 
 
