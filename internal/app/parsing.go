@@ -60,6 +60,12 @@ func parsePlaylist(desc string) ([]song, error) {
 	// Split by ", " (2)
 	songs := strings.Split(list, ", ")
 
+	// if playlist no so long, do not add anything, it's a special episode
+	// see https://podcast.ausha.co/yckm/yckm-beer-x-metal-burp-666-burp
+	if len(songs) <= 1 {
+		return nil, nil
+	}
+
 	// for each song
 	for _, e := range songs {
 		elem := strings.Split(e, "/")
