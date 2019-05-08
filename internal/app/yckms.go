@@ -20,6 +20,8 @@ import (
 type song struct {
 	// song title
 	title string
+	// album
+	album string
 	// song artist
 	artist string
 }
