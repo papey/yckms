@@ -97,14 +97,19 @@ func createShow(item *gofeed.Item, name string) (*show, error) {
 	var songs []song
 	var err error
 
-	// pass show as arg, extract songs from playlist
-	if name == "YCKM" {
+	switch name {
+	case "YCKM":
 		songs, err = parseYCKMPlaylist(item.ITunesExt.Summary)
 		if err != nil {
 			return nil, err
 		}
-	} else {
-		log.Fatalf("Error : podcast %s not supported", name)
+	case "Le Bruit":
+		songs = parseLeBruitPlaylist(item.ITunesExt.Summary)
+		if err != nil {
+			return nil, err
+		}
+	default:
+		log.Fatal("Show not supported")
 	}
 
 	if songs == nil {
