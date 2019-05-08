@@ -3,6 +3,8 @@ package app
 import (
 	"fmt"
 
+	"math/rand"
+
 	"github.com/zmb3/spotify"
 )
 
@@ -37,22 +39,38 @@ func addSongsToPlaylist(songs []song, pl *spotify.FullPlaylist, client *spotify.
 
 	// array of tracks IDs
 	var tracks []spotify.ID
+	// search query
+	var search string
 
 	// for each songs in a show
 	for _, elem := range songs {
-		// forge search query
-		search := fmt.Sprintf("artist:%s track:%s", elem.artist, elem.title)
 
-		// search
+		// forge search query
+		// for tracks
+		if elem.album == "" {
+			search = fmt.Sprintf("artist:%s track:%s", elem.artist, elem.title)
+		} else if elem.title == "" {
+			// for albums
+			search = fmt.Sprintf("artist:%s album:%s", elem.artist, elem.album)
+		}
+
+		// search, tracks
 		res, err := client.Search(search, spotify.SearchTypeTrack)
 		if err != nil {
 			return err
 		}
 
-		// search query is specific, so first item is always the best
+		// ensure that the search return tracks
 		if res.Tracks.Total > 0 {
-			// add to array
-			tracks = append(tracks, res.Tracks.Tracks[0].ID)
+			// if it's a track (ie: not an album) add first result
+			if elem.title != "" {
+				tracks = append(tracks, res.Tracks.Tracks[0].ID)
+			} else if elem.album != "" {
+				// if it's an album (ie: not a track) compute pseudo random number (based on tracks number inside this album)
+				rand := rand.Intn(res.Tracks.Total)
+				// append pseudo random track
+				tracks = append(tracks, res.Tracks.Tracks[rand].ID)
+			}
 		}
 
 	}
