@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-// parse description and extract playlist
+// parse description and extract playlist, YCKM edition
 // Input exemple :
 // 		<p>Au programme :</p>
 // 		<p>- Revue de presse : Matthieu</p>
@@ -71,7 +71,7 @@ func parseYCKMPlaylist(desc string) ([]song, error) {
 		elem := strings.Split(e, "/")
 		// TRIM, just to be sure
 		if len(elem) >= 2 {
-			song := song{title: strings.Trim(elem[1], " "), artist: strings.Trim(elem[0], " ")}
+			song := song{title: strings.Trim(elem[1], " "), artist: strings.Trim(elem[0], " "), album: ""}
 			s = append(s, song)
 		}
 	}
