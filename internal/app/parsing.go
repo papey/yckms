@@ -27,7 +27,7 @@ import (
 // 		An array containing each combo Artist / Song
 // Third step (3) :
 //		A song object
-func parsePlaylist(desc string) ([]song, error) {
+func parseYCKMPlaylist(desc string) ([]song, error) {
 
 	var s []song
 

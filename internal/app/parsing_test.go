@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestParsePlaylist(t *testing.T) {
+func TestParseYCKMPlaylist(t *testing.T) {
 	input := `Au programme :
 - Revue de presse : Matthieu
 - Chronique Fidlar : Théo
@@ -15,7 +15,7 @@ Playlist : Bus / I Buried Paul, Nails / Endless Resistance, Sepultura / Territor
 	artistExpected := "Bus"
 	songExpected := "Territory"
 
-	s, err := parsePlaylist(input)
+	s, err := parseYCKMPlaylist(input)
 	if err != nil {
 		t.FailNow()
 	}

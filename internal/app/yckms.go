@@ -87,12 +87,20 @@ func parseDates(from string, to string) (*interval, error) {
 }
 
 // createShow handles creations of show structs
-func createShow(item *gofeed.Item) (*show, error) {
+func createShow(item *gofeed.Item, name string) (*show, error) {
 
-	// pass last show as arg, extract songs from playlist
-	songs, err := parsePlaylist(item.ITunesExt.Summary)
-	if err != nil {
-		return nil, err
+	// local vars
+	var songs []song
+	var err error
+
+	// pass show as arg, extract songs from playlist
+	if name == "YCKM" {
+		songs, err = parseYCKMPlaylist(item.ITunesExt.Summary)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		log.Fatalf("Error : podcast %s not supported", name)
 	}
 
 	if songs == nil {
@@ -139,7 +147,7 @@ func createShows(feed *gofeed.Feed, last bool, from string, to string) ([]*show,
 	// all shows, range over
 	for _, e := range items {
 		// create show
-		s, err := createShow(e)
+		s, err := createShow(e, feed.Title)
 		if err != nil {
 			return nil, err
 		}
