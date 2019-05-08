@@ -23,6 +23,8 @@ type song struct {
 	// song artist
 	artist string
 }
+
+// Show struct
 type show struct {
 	// podcast title/name
 	name string
