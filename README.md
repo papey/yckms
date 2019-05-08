@@ -2,8 +2,13 @@
 
 [![Build Status](https://drone.github.papey.fr/api/badges/papey/yckms/status.svg)](https://drone.github.papey.fr/papey/yckms)
 
-Small go app to sync playlists from [YCKM](https://podcast.ausha.co/yckm)
-french metal podcast show to Spotify
+Small go app to sync playlists from various
+french metal podcast shows to Spotify.
+
+YCKMS currently supports :
+
+- [YCKM](https://podcast.ausha.co/yckm)
+- [Le Bruit](https://podcast.ausha.co/le-bruit)
 
 ## Build
 
@@ -53,6 +58,12 @@ If no flag is provided, sync all
     # Accept access to user profile and data
     # Ok, everything is fine
     You are logged in as : morty
+
+## Notes
+
+Le Bruit podcast is focused on album rather than songs (like YCKM). Each
+playlist generated for Le Bruit is a collection of pseudo random tracks of
+albums discussed in the show episode.
 
 ## Licence
 
