@@ -99,10 +99,7 @@ func createShow(item *gofeed.Item, name string) (*show, error) {
 
 	switch name {
 	case "YCKM":
-		songs, err = parseYCKMPlaylist(item.ITunesExt.Summary)
-		if err != nil {
-			return nil, err
-		}
+		songs = parseYCKMPlaylist(item.ITunesExt.Summary)
 	case "Le Bruit":
 		songs = parseLeBruitPlaylist(item.ITunesExt.Summary)
 	default:

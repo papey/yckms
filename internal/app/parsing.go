@@ -27,7 +27,7 @@ import (
 // 		An array containing each combo Artist / Song
 // Third step (3) :
 //		A song object
-func parseYCKMPlaylist(desc string) ([]song, error) {
+func parseYCKMPlaylist(desc string) []song {
 
 	var s []song
 
@@ -36,7 +36,7 @@ func parseYCKMPlaylist(desc string) ([]song, error) {
 
 	// pltf is the last element is the playlist, but not formated (1)
 	if len(split) == 0 {
-		return nil, nil
+		return nil
 	}
 
 	plnf := split[len(split)-1]
@@ -45,13 +45,13 @@ func parseYCKMPlaylist(desc string) ([]song, error) {
 	// prepare regex
 	reg, err := regexp.Compile(`(?:Playlist|PLAYLIST|Setlist) : (.+)`)
 	if err != nil {
-		return nil, err
+		return nil
 	}
 
 	// pl contain the string playlist (1)
 	pl := reg.FindSubmatch([]byte(plnf))
 	if pl == nil {
-		return nil, nil
+		return nil
 	}
 
 	// convert to string
@@ -63,7 +63,7 @@ func parseYCKMPlaylist(desc string) ([]song, error) {
 	// if playlist no so long, do not add anything, it's a special episode
 	// see https://podcast.ausha.co/yckm/yckm-beer-x-metal-burp-666-burp
 	if len(songs) <= 1 {
-		return nil, nil
+		return nil
 	}
 
 	// for each song
@@ -76,7 +76,7 @@ func parseYCKMPlaylist(desc string) ([]song, error) {
 		}
 	}
 
-	return s, err
+	return s
 
 }
 
