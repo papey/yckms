@@ -16,7 +16,7 @@ func main() {
 	// Basic config
 	app.Name = "YCKMS"
 	app.Usage = "Sync playlists from frech metal podcasts shows to Spotify"
-	app.Version = "0.0.4-1"
+	app.Version = "0.0.5"
 
 	// Flags
 	app.Flags = []cli.Flag{
