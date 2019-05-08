@@ -67,7 +67,7 @@ func addSongsToPlaylist(songs []song, pl *spotify.FullPlaylist, client *spotify.
 				tracks = append(tracks, res.Tracks.Tracks[0].ID)
 			} else if elem.album != "" {
 				// if it's an album (ie: not a track) compute pseudo random number (based on tracks number inside this album)
-				rand := rand.Intn(res.Tracks.Total)
+				rand := rand.Intn(len(res.Tracks.Tracks))
 				// append pseudo random track
 				tracks = append(tracks, res.Tracks.Tracks[rand].ID)
 			}
