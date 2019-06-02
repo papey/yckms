@@ -61,7 +61,7 @@ func AuthToSpotify() (*spotify.Client, string, error) {
 	http.HandleFunc("/callback", complete)
 	// only respond on /callback
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		log.Println("Burp !")
+		log.Println("Everything looks good, go !")
 	})
 	// serve
 	go http.ListenAndServe(":8080", nil)
