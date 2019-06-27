@@ -2,6 +2,8 @@ package app
 
 import (
 	"fmt"
+	"html"
+	"regexp"
 
 	"math/rand"
 
@@ -54,8 +56,11 @@ func addSongsToPlaylist(songs []song, pl *spotify.FullPlaylist, client *spotify.
 			search = fmt.Sprintf("artist:%s album:%s", elem.artist, elem.album)
 		}
 
+		// Unescaped first, just to be sure
+		query := purgeSearchQuery(html.UnescapeString(search))
+
 		// search, tracks
-		res, err := client.Search(search, spotify.SearchTypeTrack)
+		res, err := client.Search(query, spotify.SearchTypeTrack)
 		if err != nil {
 			return err
 		}
@@ -83,4 +88,11 @@ func addSongsToPlaylist(songs []song, pl *spotify.FullPlaylist, client *spotify.
 
 	return nil
 
+}
+
+func purgeSearchQuery(query string) string {
+	reg := regexp.MustCompile("['&]")
+	ret := reg.ReplaceAll([]byte(query), []byte(""))
+
+	return string(ret)
 }
