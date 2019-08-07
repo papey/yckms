@@ -46,16 +46,18 @@ go build ykcms.go
 YCKMS takes one arg, multiple env var and multiple flags
 
 - Env vars :
-    - SPOTIFY_ID : from oauth setup (3)
-    - SPOTIFY_SECRET : from oauth setup (3)
-    - HTTP_CALLBACK_PORT : change http callback port (default 8080)
+
+  - SPOTIFY_ID : from oauth setup (3)
+  - SPOTIFY_SECRET : from oauth setup (3)
+  - HTTP_CALLBACK_PORT : change http callback port (default 8080)
 
 - Arguments :
-    - The URL to the podcast [RSS Feed](https://feed.ausha.co/owAEhJ0qOPkb) (eg: https://feed.ausha.co/owAEhJ0qOPkb)
+
+  - The URL to the podcast [RSS Feed](https://feed.ausha.co/owAEhJ0qOPkb) (eg: https://feed.ausha.co/owAEhJ0qOPkb)
 
 - Flags :
-    - --last, -l : sync last show
-    - --date, -d : sync show from date --from to date --to (format YYYY-MM-DD)
+  - --last, -l : sync last show
+  - --date, -d : sync show from date --from to date --to (format YYYY-MM-DD)
 
 If no flag is provided, sync all
 
@@ -97,7 +99,7 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 
 ## Authors
 
-- **Wilfried OLLIVIER** - *Main author* - [Papey](https://github.com/papey)
+- **Wilfried OLLIVIER** - _Main author_ - [Papey](https://github.com/papey)
 
 ## License
 
