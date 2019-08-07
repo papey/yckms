@@ -47,6 +47,12 @@ func addSongsToPlaylist(songs []song, pl *spotify.FullPlaylist, client *spotify.
 	// for each songs in a show
 	for _, elem := range songs {
 
+		// if we already have ids
+		if elem.id != "" {
+			tracks = append(tracks, spotify.ID(elem.id))
+			continue
+		}
+
 		// forge search query
 		// for tracks
 		if elem.album == "" {

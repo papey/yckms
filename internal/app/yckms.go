@@ -24,6 +24,8 @@ type song struct {
 	album string
 	// song artist
 	artist string
+	// song id
+	id string
 }
 
 // Show struct
@@ -102,6 +104,8 @@ func createShow(item *gofeed.Item, name string) (*show, error) {
 		songs = parseYCKMPlaylist(item.ITunesExt.Summary)
 	case "Le Bruit":
 		songs = parseLeBruitPlaylist(item.ITunesExt.Summary)
+	case "Harry Cover, reprises fraîches et déséquilibrées ":
+		songs = parseHarryCoverPlaylist(item.ITunesExt.Summary)
 	default:
 		log.Fatal("Show not supported")
 	}
