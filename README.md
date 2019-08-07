@@ -9,6 +9,7 @@ YCKMS currently supports :
 
 - [YCKM](https://podcast.ausha.co/yckm)
 - [Le Bruit](https://podcast.ausha.co/le-bruit)
+- [Harry Cover](https://anchor.fm/leotot8)
 
 ## Getting Started
 
@@ -107,4 +108,4 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 
 ## Acknowledgments
 
-- Thanks Le Bruit and YCKM for all you podcasts !
+- Thanks Le Bruit, YCKM and Harry Cover for all you podcasts !
