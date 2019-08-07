@@ -82,3 +82,43 @@ Ausha (https://podcast.ausha.co/le-bruit), Youtube (https://www.youtube.com/chan
 	}
 
 }
+
+func TestParseHarryCoverPlaylist(t *testing.T) {
+	input := `<p>J'inaugure aujourd'hui une nouvelle catégorie d'épisodes, les "<strong>Fausses Bonnes Idées</strong>" entre hommages ratés, plaisirs coupables et autres plantages.</p>
+<p>Pour ce premier épisode, retour sur l'intemporel "Wicked Game" de Chris Isaak. Non, la reprise évoquée ne sera ni celle de James Vincent Mc Morrow, ni celle de London Grammar, pas meilleures que l'originale, mais pas assez décalées pour être considérées comme ratées.</p>
+<p>J'attends vos retours, commentaires et étoiles Itunes.</p>
+<p><a href="https://open.spotify.com/track/390AWnOn2rfe9FzQjYmxIH?si=iRpCp690Q2C5jkF6vzs2Sw">La version originale Spotify</a></p>
+<p><a href="https://www.youtube.com/watch?v=dlJew-Dw87I">La version originale Youtube</a></p>
+<p><a href="https://open.spotify.com/track/5XenUjG7cRnTkUe8AVuuMX?si=xmc2-xfpSK2ENCJlHppLrw">La reprise Spotify</a></p>
+<p><a href="https://www.youtube.com/watch?v=8oYodfK4DkE">La reprise Youtube</a></p>
+<p><a href="https://open.spotify.com/playlist/2MEGtxKmjFC8vSxBj45Wi3?si=CzXMQUCiR_6yKSmkIyOnNg">La playlist Spotify de l'émission</a></p>
+<p><a href="https://discord.gg/FjeJpx">Le discord des streetcasteurs</a></p>
+<p>Me contacter sur Twitter : @HCoverpodcast</p>
+<p><br></p>
+<p><strong>Pour aller plus loin :</strong></p>
+<p><a href="https://open.spotify.com/album/36tz5XLSdscEvXvzWQwSXv?si=eCGtZ6MhR5CXxBIQXAOC9A">-"Razorblade Romance" sur Spotify</a></p>
+<p><a href="https://www.youtube.com/watch?v=jK4IBAZGkdE">-"Razorblade Romance" sur Youtube</a></p>
+<p><a href="https://open.spotify.com/track/3V1H6liHwCDcWeqdPJabOM?si=XV2EIGWtTAyIXex42UeVDA">-"Wicked Game" par Stone Sour sur Spotify</a></p>
+<p><a href="https://www.youtube.com/watch?v=cncoJB_C-m0">-"Wicked Game" par Stone Sour sur Youtube</a></p>
+<p><br></p>
+<p><strong>Ecoutez ce podcast sur :</strong></p>
+<p><a href="https://anchor.fm/leotot8">Anchor</a></p>
+<p><a href="https://podcasts.apple.com/us/podcast/harry-cover-reprises-fra%C3%AEches-et-d%C3%A9s%C3%A9quilibr%C3%A9es/id1463761176?uo=4">Apple Podcasts</a></p>
+<p><a href="https://open.spotify.com/show/6usEP3XdEwNcotYdQ8MtWy">Spotify</a></p>
+<p><a href="https://anchor.fm/s/b3b7468/podcast/rss">Flux rss</a></p>
+<p><br></p>
+<p>Générique d'intro : "I will survive" par Cake</p>
+<p><br></p>`
+
+	idExpected := "390AWnOn2rfe9FzQjYmxIH"
+
+	s := parseHarryCoverPlaylist(input)
+	if s == nil {
+		t.FailNow()
+	}
+
+	if s[0].id != idExpected {
+		t.Errorf("Expected : %s, Get : %s", idExpected, s[0].id)
+	}
+
+}

@@ -71,7 +71,7 @@ func parseYCKMPlaylist(desc string) []song {
 		elem := strings.Split(e, "/")
 		// TRIM, just to be sure
 		if len(elem) >= 2 {
-			song := song{title: strings.Trim(elem[1], " "), artist: strings.Trim(elem[0], " "), album: ""}
+			song := song{title: strings.Trim(elem[1], " "), artist: strings.Trim(elem[0], " "), album: "", id: ""}
 			s = append(s, song)
 		}
 	}
@@ -106,8 +106,41 @@ func parseLeBruitPlaylist(desc string) []song {
 			// res[1] contains Artist, res[2] contains Title
 			res := reg.FindSubmatch([]byte(split[1]))
 			if len(res) >= 3 {
-				songs = append(songs, song{artist: string(res[1]), album: strings.Trim(string(res[2]), ""), title: ""})
+				songs = append(songs, song{artist: string(res[1]), album: strings.Trim(string(res[2]), ""), title: "", id: ""})
 			}
+		}
+	}
+
+	// handle silent error, if no playlist found, just pass
+	if found == false {
+		return nil
+	}
+
+	return songs
+
+}
+
+// parse description and extract playlist, HarryCover edition
+// First step (1), split on \n
+// Second step (2), isolate lines containing original version and cover version
+// Third step (3), get Spotify ID from URL
+func parseHarryCoverPlaylist(desc string) []song {
+
+	// some local vars
+	var songs []song
+	found := false
+
+	// (1)
+	split := strings.Split(desc, "\n")
+
+	for _, elem := range split {
+		// (2)
+		if strings.Contains(elem, "https://open.spotify.com/track") {
+			found = true
+			// (3)
+			reg := regexp.MustCompile(`.*https://open.spotify.com/track/(\w+)?.*`)
+			res := reg.FindSubmatch([]byte(elem))
+			songs = append(songs, song{artist: "", album: "", title: "", id: string(res[1])})
 		}
 	}
 
