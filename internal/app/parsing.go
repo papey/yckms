@@ -71,7 +71,7 @@ func parseYCKMPlaylist(desc string) []song {
 		elem := strings.Split(e, "/")
 		// TRIM, just to be sure
 		if len(elem) >= 2 {
-			song := song{title: strings.Trim(elem[1], " "), artist: strings.Trim(elem[0], " "), album: ""}
+			song := song{title: strings.Trim(elem[1], " "), artist: strings.Trim(elem[0], " "), album: "", id: ""}
 			s = append(s, song)
 		}
 	}
@@ -106,7 +106,7 @@ func parseLeBruitPlaylist(desc string) []song {
 			// res[1] contains Artist, res[2] contains Title
 			res := reg.FindSubmatch([]byte(split[1]))
 			if len(res) >= 3 {
-				songs = append(songs, song{artist: string(res[1]), album: strings.Trim(string(res[2]), ""), title: ""})
+				songs = append(songs, song{artist: string(res[1]), album: strings.Trim(string(res[2]), ""), title: "", id: ""})
 			}
 		}
 	}

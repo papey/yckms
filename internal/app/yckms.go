@@ -24,6 +24,8 @@ type song struct {
 	album string
 	// song artist
 	artist string
+	// song id
+	id string
 }
 
 // Show struct
