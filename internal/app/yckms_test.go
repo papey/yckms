@@ -6,7 +6,7 @@ import (
 
 func TestCreateImage(t *testing.T) {
 
-	url := "https://image.ausha.co/SHSw9XAonLSu3xLyQBpTOT1ai6bpGCw8LKceHuan_1400x1400.jpeg?t=1556571464"
+	url := "https://image.ausha.co/xImOcFGagHsQeD4zMmJ19BF4jYkRcLgQ7B1tanDC_400x400.jpeg"
 
 	_, err := createImage(url)
 	if err != nil {
