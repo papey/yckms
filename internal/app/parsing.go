@@ -29,33 +29,46 @@ import (
 //		A song object
 func parseYCKMPlaylist(desc string) []song {
 
+	// is playlist found ?
+	var found bool = false
+
+	// playlist
+	var plst string = ""
+
 	var s []song
 
 	// Split on carriage return
 	split := strings.Split(desc, "\n")
 
-	// pltf is the last element is the playlist, but not formated (1)
+	// ensure split is ok
 	if len(split) == 0 {
 		return nil
 	}
 
-	plnf := split[len(split)-1]
-
-	// remove trailing <p> and </p>
-	// prepare regex
 	reg, err := regexp.Compile(`(?:Playlist|PLAYLIST|Setlist) : (.+)`)
+	// preprare regex
 	if err != nil {
 		return nil
 	}
 
-	// pl contain the string playlist (1)
-	pl := reg.FindSubmatch([]byte(plnf))
-	if pl == nil {
+	// loop over lines
+	for _, elem := range split {
+
+		pl := reg.FindSubmatch([]byte(elem))
+		if len(pl) > 0 {
+			plst = string(pl[1])
+			found = true
+			break
+		}
+
+	}
+
+	if !found {
 		return nil
 	}
 
 	// convert to string
-	list := string(pl[1])
+	list := string(plst)
 
 	// Split by ", " (2)
 	songs := strings.Split(list, ", ")
