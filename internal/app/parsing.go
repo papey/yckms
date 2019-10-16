@@ -45,18 +45,31 @@ func parseYCKMPlaylist(desc string) []song {
 		return nil
 	}
 
-	reg, err := regexp.Compile(`(?:Playlist|PLAYLIST|Setlist) : (.+)`)
+	reg, err := regexp.Compile(`(Playlist|PLAYLIST|Setlist) :\s?(.+)?`)
 	// preprare regex
 	if err != nil {
 		return nil
 	}
 
 	// loop over lines
-	for _, elem := range split {
+	for i, elem := range split {
 
+		// Try to find something that looks like a playlist
 		pl := reg.FindSubmatch([]byte(elem))
-		if len(pl) > 0 {
-			plst = string(pl[1])
+		// If something is found
+		if len(pl) >= 1 {
+			// Check length of submatch array
+			if len(pl) == 3 {
+				// If the second goup is empty
+				if string(pl[2]) == "" {
+					// Playlist is the next line
+					plst = split[i+1]
+				} else {
+					// Else, playlist is the last member of match array
+					plst = string(pl[2])
+				}
+			}
+			// Yay, we found something
 			found = true
 			break
 		}
