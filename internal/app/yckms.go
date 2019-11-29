@@ -106,6 +106,8 @@ func createShow(item *gofeed.Item, name string) (*show, error) {
 		songs = parseLeBruitPlaylist(item.ITunesExt.Summary)
 	case "Harry Cover, le podcast des meilleures reprises":
 		songs = parseHarryCoverPlaylist(item.ITunesExt.Summary)
+	case "La Pifothèque":
+		songs = parseLaPifothequePlaylist(item.ITunesExt.Summary)
 	default:
 		log.Fatal("Show not supported")
 	}
