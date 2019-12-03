@@ -183,22 +183,17 @@ func parseHarryCoverPlaylist(desc string) []song {
 // parse description and extract playlist, Le Pifothèque edition
 // (1) extract epifode number
 // (2) get albums from CSV
-func parseLaPifothequePlaylist(desc string) []song {
+func parseLaPifothequePlaylist(title string) []song {
 
 	// Local var containing epifode number
 	var epifode string
 
-	// (1)
-	split := strings.Split(desc, "\n")
+	reg := regexp.MustCompile(`^La Pifothèque - Epifode (\d+)`)
 
-	reg := regexp.MustCompile(`^(\d+)*.`)
-
-	res := reg.FindSubmatch([]byte(split[0]))
+	res := reg.FindSubmatch([]byte(title))
 
 	// Little hack to get the first epifode
-	if strings.Contains(split[0], "Premier numéro") {
-		epifode = "1"
-	} else if len(res) >= 2 {
+	if len(res) >= 2 {
 		epifode = string(res[1])
 	} else {
 		return nil
