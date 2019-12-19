@@ -62,7 +62,7 @@ func parseYCKMPlaylist(desc string) []song {
 			// Check length of submatch array
 			if len(pl) == 3 {
 				// If the second goup is empty
-				if string(pl[2]) == "" {
+				if strings.TrimSpace(string(pl[2])) == "" {
 					// Playlist is the next line
 					plst = split[i+1]
 				} else {
