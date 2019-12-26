@@ -110,9 +110,7 @@ func parseYCKMPlaylist(desc string) []song {
 // parse description and extract playlist, Le Bruit edition
 // First step (1), split on \n
 // Second step (2), isolate lines containing 💀 or 🐻
-// Then (3), split on "|"
-// (4) regex on line : Jon and Roy – Here (Ecouter (https://song.link/album/fr/i/1447292371))
-// to get Artist and Song
+// (3) regex on line to get Artist and Song
 func parseLeBruitPlaylist(desc string) []song {
 
 	// some local vars
@@ -127,12 +125,10 @@ func parseLeBruitPlaylist(desc string) []song {
 		if strings.Contains(elem, "💀") || strings.Contains(elem, "🐻") {
 			found = true
 			// (3)
-			split := strings.Split(elem, "|")
-			// (4)
-			reg := regexp.MustCompile("[ ]+(.*) (?:-|–) (.*) \\(Ecouter.*")
+			reg := regexp.MustCompile(`^(?:💀|🐻) \(\d+:\d+:\d+\) (.*) - (.*) \(Ecouter l’album.*`)
 			// res[1] contains Artist, res[2] contains Title
-			res := reg.FindSubmatch([]byte(split[1]))
-			if len(res) >= 3 {
+			res := reg.FindSubmatch([]byte(elem))
+			if len(res) >= 2 {
 				songs = append(songs, song{artist: string(res[1]), album: strings.Trim(string(res[2]), ""), title: "", id: ""})
 			}
 		}

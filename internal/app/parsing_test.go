@@ -31,25 +31,57 @@ Playlist : Bus / I Buried Paul, Nails / Endless Resistance, Sepultura / Territor
 }
 
 func TestParseLeBruitPlaylist(t *testing.T) {
-	input := `On en a gros (c'est faux) ! Au programme : Bouli prends goût à se faire casser les dents, Germain dors avec un Irlandais, nous faisons des sous-entendus graveleux avec une élégance sans égale et en plus y a du rab !
+	input := `Enfin le voilà !
 
-Le pod :
-Le Bruit sur son 31
+Le futur du Bruit :
+(0:04:09) Le cool
+La saison 02 : Nouveau graphics et jingles ! yeaaah !
+  Balek de Facebook, insta et Goodbye au site !
+  Les lives sur twitch motherfucker !
+  Tee-shirts ?
+  Nouvelle émission Le Bruit tous les lundis sur TF1
 
-Les chroniques du bruit :
-💀 0:06:07 | Clowns - Nature / Nurture (Ecouter (https://song.link/album/fr/i/1451092249))
-🐻 0:15:25 | Belzebubs - Pantheon Of The Nightside Gods (Ecouter (https://song.link/album/fr/i/1453386311))
-💀 0:25:26 | Boundaries - Turning Point (Ecouter (https://song.link/album/fr/i/1453296200))
-🐻 0:34:50 | Hath - Of Rot And Ruin (Ecouter (https://song.link/album/fr/i/1449749750))
-💀 0:47:28 | Danko Jones - A Rock Supreme (Ecouter (https://song.link/album/fr/i/1448249776))
-🐻 0:58:04 | Glen Hansard - This Wild Willing (Ecouter (https://song.link/album/fr/i/1449024496))
+(0:15:10) Le pas cool
+Futur strike sur apple podcast ?
+    Ce qu'on va faire et ce qu’on ne va pas faire
+      Tour de france en camionnette, représentation en live chez l'autochtone
 
-Dans notre poche :
-🐻 1:09:16 | Suldusk - Lunar Falls (Ecouter (https://song.link/album/fr/i/1455319108))
-🐻 1:10:10 | Extortionist - Sever the Cord (Ecouter (https://song.link/album/fr/i/1451678823))
-💀 1:11:10 | Billie Eilish – when we all fall asleep, where do we go? (Ecouter (https://song.link/album/fr/i/1450695723))
-💀 1:12:05 | Jon and Roy – Here (Ecouter (https://song.link/album/fr/i/1447292371))
-💩 1:15:44 | Bêtisier
+
+C’est l’heure du BILAN mon chat !
+10 :
+💀 (0:22:39) Flight of the Conchords - Live in London (Ecouter l’album (https://album.link/fr/i/1447320701)) (Ecouter l’épisode concerné (https://podcast.ausha.co/le-bruit/le-bruit-de-l-avant-2019-case-3))
+🐻 (0:23:58) Last Train - The Big Picture (Ecouter l’album (https://album.link/fr/i/1472019197)) (Ecouter l’épisode concerné (https://podcast.ausha.co/le-bruit/le-bruit-volume-12-l-e-pisode-sans-nom))
+9 :
+💀 (0:26:27) Jon and Roy - Here (Ecouter l’album (https://album.link/fr/i/1447292371))
+🐻 (0:28:45) Alcest - Spiritual Instinct (Ecouter l’album (https://album.link/fr/i/1476281691))
+8 :
+💀 (0:31:05) Dangerface - Get Loud! (Ecouter l’album (https://album.link/fr/i/1448576237)) (Ecouter l’épisode concerné (https://podcast.ausha.co/le-bruit/le-bruit-volume-03-grand-e-cart-facial-entre-deux-brouettes))
+🐻 (0:32:10) The Offering - HOME (Ecouter l’album (https://album.link/fr/i/1464688715)) (Ecouter l’épisode concerné (https://podcast.ausha.co/le-bruit/le-bruit-volume-11-des-menhirs-et-des-crobots))
+7 :
+💀 (0:34:09) Frank Carter &amp; The Rattlesnakes - End of Suffering (Ecouter l’album (https://album.link/fr/i/1447497006)) (Ecouter l’épisode concerné (https://podcast.ausha.co/le-bruit/le-bruit-volume-08-la-baleine-de-pointe-a-pitre))
+🐻 (0:35:33) Cult of Luna - A Dawn to Fear (Ecouter l’album (https://album.link/fr/i/1472437655)) (Ecouter l’épisode concerné (https://podcast.ausha.co/le-bruit/le-bruit-volume-12-l-e-pisode-sans-nom))
+6 :
+💀 (0:36:32) Dinosaur Pile-Up - Celebrity Mansions (Ecouter l’album (https://album.link/fr/i/1456626323)) (Ecouter l’épisode concerné (https://podcast.ausha.co/le-bruit/le-bruit-volume-09-allez-vous-faire-loutre-1))
+🐻 (0:38:15) Shadow Of Intent - Melancholy (Ecouter l’album (https://album.link/fr/i/1466697634)) (Ecouter l’épisode concerné (https://podcast.ausha.co/le-bruit/le-bruit-de-l-avant-2019-case-4))
+5 :
+💀 (0:39:07) Rival Sons - Feral Roots (Ecouter l’album (https://album.link/fr/i/1440340685)) (Ecouter l’épisode concerné (https://podcast.ausha.co/le-bruit/le-bruit-volume-02-merci-pour-les-champignons))
+🐻 (0:40:17) HATH - Of Rot and Ruin (Ecouter l’album (https://album.link/fr/i/1449749750)) (Ecouter l’épisode concerné (https://podcast.ausha.co/le-bruit/le-bruit-volume-07-salsifis-les-conneries))
+4 :
+💀 (0:41:15) Slipknot - We Are Not Your Kind (Ecouter l’album (https://album.link/fr/i/1463706038)) (Ecouter l’épisode concerné (https://podcast.ausha.co/le-bruit/le-bruit-volume-11-des-menhirs-et-des-crobots))
+🐻 (0:42:47) Rival Sons - Feral Roots (Ecouter l’album (https://album.link/fr/i/1440340685)) (Ecouter l’épisode concerné (https://podcast.ausha.co/le-bruit/le-bruit-volume-02-merci-pour-les-champignons))
+3 :
+💀 (0:43:27) Billie Eilish - When We All Fall Asleep, Where Do We Go? (Ecouter l’album (https://album.link/fr/i/1450695723))
+🐻 (0:47:20) Wheel - Moving Backwards (Ecouter l’album (https://album.link/fr/i/1442249647)) (Ecouter l’épisode concerné (https://podcast.ausha.co/le-bruit/le-bruit-volume-05-loups-flamboyants-vs-cyber-tarentules))
+2 :
+💀 (0:49:20) Norma Jean - All Hail (Ecouter l’album (https://album.link/fr/i/1475151504)) (Ecouter l’épisode concerné (https://podcast.ausha.co/le-bruit/le-bruit-de-l-avant-2019-case-7))
+🐻 (0:50:45) Periphery - Periphery IV: HAIL STAN (Ecouter l’album (https://album.link/fr/i/1450856455)) (Ecouter l’épisode concerné (https://podcast.ausha.co/le-bruit/le-bruit-volume-06-la-cornebidouille-de-satan))
+1 :
+💀 (0:53:17) Clowns - Nature / Nurture (Ecouter l’album (https://album.link/fr/i/1451092249)) (Ecouter l’épisode concerné (https://podcast.ausha.co/le-bruit/le-bruit-volume-07-salsifis-les-conneries))
+🐻 (0:55:18) Wilderun - Veil of Imagination (Ecouter l’album (https://album.link/fr/i/1479174395)) (Ecouter l’épisode concerné (https://podcast.ausha.co/le-bruit/le-bruit-de-l-avant-2019-case-8))
+
+Top 100 (Topsters):
+🐻 https://i.imgur.com/3b31NW0.png (https://i.imgur.com/3b31NW0.png)
+💀 https://i.imgur.com/ARMW0lb.png (https://i.imgur.com/ARMW0lb.png)
 
 La playlist Spotify rassemblant les morceaux des épisodes : La playlist de l'année 2019 (https://open.spotify.com/user/coloneltabasco/playlist/5m4bJu85sXYO6XybLtEprb?si=0gxIYytsQoCba9pZgGCmfw)
 
@@ -65,8 +97,8 @@ Twitter : @LeBruitPodcast (https://twitter.com/LeBruitPodcast)
 Plateforme d’écoutes :
 Ausha (https://podcast.ausha.co/le-bruit), Youtube (https://www.youtube.com/channel/UCjIrHhD3HXBZFDd4cR5Mouw), Spotify (https://open.spotify.com/show/31ZkKfw71Dp6uGhxmB7joR?si=JRoQXdO6TJqlVa-brimyeg), Feedburner (http://feeds.feedburner.com/lebruitpodcast), Tunein Radio (https://tunein.com/podcasts/Music-Podcasts/Le-Bruit-p1183237/), Itunes (https://itunes.apple.com/fr/podcast/le-bruit/id1448164973?l=en), Stitcher (https://www.stitcher.com/podcast/guillaume-delacroix/le-bruit?refid=stpr), PocketCast (https://pca.st/VKP0), Podcloud (https://podcloud.fr/podcast/le-bruit), Deezer (https://www.deezer.com/fr/show/70571), Google podcast (https://www.google.com/podcasts?feed=aHR0cDovL2ZlZWRzLmZlZWRidXJuZXIuY29tL2xlYnJ1aXRwb2RjYXN0)`
 
-	artistExpected := "Clowns"
-	albumExpected := "Of Rot And Ruin"
+	artistExpected := "Flight of the Conchords"
+	albumExpected := "Spiritual Instinct"
 
 	s := parseLeBruitPlaylist(input)
 	if s == nil {
