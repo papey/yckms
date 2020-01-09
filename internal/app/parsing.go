@@ -184,7 +184,7 @@ func parseLaPifothequePlaylist(title string) []song {
 	// Local var containing epifode number
 	var epifode string
 
-	reg := regexp.MustCompile(`^La Pifothèque - Epifode (\d+)`)
+	reg := regexp.MustCompile(`^La Pifothèque ?[-]?[ ]Epifode (\d+)`)
 
 	res := reg.FindSubmatch([]byte(title))
 
