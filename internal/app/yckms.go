@@ -8,6 +8,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"sort"
 	"time"
 
 	"github.com/araddon/dateparse"
@@ -38,7 +39,17 @@ type show struct {
 	desc string
 	// image used as Spotify playlist image
 	image io.Reader
+	// generator id
+	genid int
 }
+
+// create a specific type for a list of show
+type shows []*show
+
+// implement sort interface using genid as compare data
+func (s shows) Len() int           { return len(s) }
+func (s shows) Swap(i, j int)      { s[i], s[j] = s[j], s[i] }
+func (s shows) Less(i, j int) bool { return s[i].genid < s[j].genid }
 
 type interval struct {
 	from time.Time
@@ -92,8 +103,18 @@ func parseDates(from string, to string) (*interval, error) {
 
 }
 
+// showResult is used as a value to get result from createShow go routine
+type showResult struct {
+	// show structure
+	s *show
+	// warning
+	w string
+	// error
+	e error
+}
+
 // createShow handles creations of show structs
-func createShow(item *gofeed.Item, name string) (*show, error) {
+func createShow(item *gofeed.Item, name string, id int, pipe chan showResult) {
 
 	// local vars
 	var songs []song
@@ -113,25 +134,28 @@ func createShow(item *gofeed.Item, name string) (*show, error) {
 	}
 
 	if songs == nil {
-		fmt.Printf("Warning : no playlist to parse in show %s\n", item.Title)
-		return nil, nil
+		// not an error, but no show created, send a warning
+		pipe <- showResult{s: nil, e: nil, w: fmt.Sprintf("Warning: no playlist to parse in show %s", item.Title)}
+		return
 	}
 
+	// get image
 	img, err := createImage(item.Image.URL)
 	if err != nil {
-		return nil, err
+		// if something goes wrong, send an error
+		pipe <- showResult{s: nil, e: fmt.Errorf("Error: can't create show image for show %s", item.Title), w: ""}
+		return
 	}
 
-	// create show stuct
-	return &show{name: item.Title, playlist: songs, desc: item.Published, image: img}, nil
-
+	// send actual show playlist and metadata
+	pipe <- showResult{s: &show{name: item.Title, playlist: songs, desc: item.Published, image: img, genid: id}, e: nil, w: ""}
 }
 
 // createShows wrap stuff to create and filter show structs
 func createShows(feed *gofeed.Feed, last bool, from string, to string) ([]*show, error) {
 
 	// local vars
-	var shows []*show
+	var s []*show
 	var items []*gofeed.Item
 	var err error
 
@@ -153,21 +177,43 @@ func createShows(feed *gofeed.Feed, last bool, from string, to string) ([]*show,
 
 	}
 
-	// all shows, range over
-	for _, e := range items {
+	// create pipe used to return value from goroutine
+	pipe := make(chan showResult, 1)
+	// ensure pipe is close at the end of the func
+	defer close(pipe)
+
+	// get playlists for all shows, using concurrency
+	for i, e := range items {
 		// create show
-		s, err := createShow(e, feed.Title)
-		if err != nil {
-			return nil, err
+		go createShow(e, feed.Title, i, pipe)
+	}
+
+	// get return from all goroutines, ensure no deadlock
+	for range items {
+		// get return value
+		ret := <-pipe
+		// if it's an error,
+		if ret.e != nil {
+			// return it to caller
+			return nil, ret.e
 		}
 
-		// append only if it's ok
-		if s != nil {
-			shows = append(shows, s)
+		// add show to current array
+		if ret.s != nil {
+			s = append(s, ret.s)
+		}
+
+		// if a warning is set, print it
+		if ret.w != "" {
+			fmt.Println(ret.w)
 		}
 	}
 
-	return shows, nil
+	// short shows
+	sort.Sort(shows(s))
+
+	// return sorted shows
+	return s, nil
 
 }
 
