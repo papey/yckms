@@ -1,6 +1,8 @@
 package spoopify
 
 import (
+	"crypto/rand"
+	"encoding/base64"
 	"errors"
 	"fmt"
 	"log"
@@ -21,8 +23,21 @@ var uri = fmt.Sprintf("http://localhost:%d/callback", getCallbackPort())
 var (
 	auth  = spotify.NewAuthenticator(uri, spotify.ScopeImageUpload, spotify.ScopePlaylistModifyPublic)
 	ch    = make(chan *spotify.Client)
-	state = "yckms"
+	state = generateRandomString(32)
 )
+
+func generateRandomString(n int) string {
+
+	r := make([]byte, n)
+	_, err := rand.Reader.Read(r)
+	if err != nil {
+		fmt.Println(err)
+
+		return ""
+	}
+
+	return base64.RawURLEncoding.EncodeToString(r)
+}
 
 func getCallbackPort() int {
 
