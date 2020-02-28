@@ -6,7 +6,6 @@ import (
 	"errors"
 	"io/ioutil"
 	"net/http"
-	"strconv"
 	"time"
 )
 
@@ -85,14 +84,13 @@ func get(r [][]string, epifode string) (a []song, err error) {
 	// Offset inside the CSV file
 	offset := 2
 
-	// Get epifode as an int
-	ep, err := strconv.Atoi(epifode)
-	if err != nil {
-		return nil, err
-	}
-
 	// Compute index of the first album for selected epifode
-	index := (ep-1)*4 + offset
+	index := offset
+
+	// loop until matching is found
+	for r[index][3] != epifode {
+		index++
+	}
 
 	// Loop on 4 albums
 	for i := index; i < index+4; i++ {
