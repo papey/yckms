@@ -18,7 +18,7 @@ func main() {
 	// Basic config
 	app.Name = "YCKMS"
 	app.Usage = "Sync playlists from frech metal podcasts shows to Spotify"
-	app.Version = "0.1.2-1"
+	app.Version = "0.1.3"
 
 	// logs setup
 	logsSetup()
