@@ -91,8 +91,8 @@ func logsSetup() {
 	// loglevel
 	loglvl := os.Getenv("LOGLEVEL")
 	if loglvl == "" {
-		log.SetLevelFromString("Warn")
-		log.Warn("No log level environment variable configured, defaulted to WARN")
+		log.SetLevelFromString("INFO")
+		log.Warn("No log level environment variable configured, defaulted to INFO")
 	} else {
 		log.SetLevelFromString(loglvl)
 		log.Info("Log level set")
