@@ -5,11 +5,11 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"strconv"
 
+	"github.com/apex/log"
 	"github.com/zmb3/spotify"
 )
 
@@ -31,7 +31,7 @@ func generateRandomString(n int) string {
 	r := make([]byte, n)
 	_, err := rand.Reader.Read(r)
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err.Error())
 
 		return ""
 	}
@@ -76,13 +76,16 @@ func AuthToSpotify() (*spotify.Client, string, error) {
 	http.HandleFunc("/callback", complete)
 	// only respond on /callback
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		log.Println("Everything looks good, go !")
+		log.Info("Everything looks good...")
 	})
 	// serve
 	go http.ListenAndServe(":8080", nil)
 
 	// try auth
 	url := auth.AuthURL(state)
+
+	log.WithField("state", state).Info("State used for this auth")
+
 	fmt.Println("Please log in to Spotify by visiting the following page :", url)
 
 	// wait for auth to complete
@@ -91,9 +94,10 @@ func AuthToSpotify() (*spotify.Client, string, error) {
 	// check if it's ok
 	user, err := client.CurrentUser()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal(err.Error())
 	}
-	fmt.Println("You are logged in as :", user.ID)
+
+	log.WithField("user", user.ID).Info("User logged in")
 
 	return client, user.ID, err
 
@@ -106,7 +110,7 @@ func complete(w http.ResponseWriter, r *http.Request) {
 	token, err := auth.Token(state, r)
 	if err != nil {
 		http.Error(w, "Couldn't get token", http.StatusForbidden)
-		log.Fatal(err)
+		log.Fatal(err.Error())
 	}
 
 	// Get state

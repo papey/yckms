@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/csv"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"time"
@@ -44,7 +45,7 @@ func download() (c []byte, err error) {
 
 	// Ensure it's ok
 	if resp.StatusCode != 200 {
-		return nil, errors.New("Status code is not a 200 OK")
+		return nil, fmt.Errorf("Status code is %d", resp.StatusCode)
 	}
 
 	// Ensure content type is ok

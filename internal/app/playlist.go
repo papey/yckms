@@ -7,6 +7,7 @@ import (
 
 	"math/rand"
 
+	"github.com/apex/log"
 	"github.com/zmb3/spotify"
 )
 
@@ -31,7 +32,10 @@ func createPlaylist(s *show, user string, client *spotify.Client) error {
 		return err
 	}
 
-	fmt.Printf("Info: playlist for show '%s' created, see %s\n", s.name, pl.URI)
+	log.WithFields(log.Fields{
+		"show": s.name,
+		"uri":  pl.URI,
+	}).Info("Playlist created")
 
 	return nil
 }
@@ -91,6 +95,11 @@ func addSongsToPlaylist(songs []song, pl *spotify.FullPlaylist, client *spotify.
 	if err != nil {
 		return err
 	}
+
+	log.WithFields(log.Fields{
+		"playlist": pl.ID,
+		"tracks":   tracks,
+	}).Debug("Songs added to playlist")
 
 	return nil
 
