@@ -52,6 +52,7 @@ YCKMS takes one arg, multiple env var and multiple flags
   - SPOTIFY_ID : from oauth setup (3)
   - SPOTIFY_SECRET : from oauth setup (3)
   - HTTP_CALLBACK_PORT : change http callback port (default 8080)
+  - LOGLEVEL : change log level of the entiere application
 
 - Arguments :
 

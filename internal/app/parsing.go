@@ -1,9 +1,10 @@
 package app
 
 import (
-	"fmt"
 	"regexp"
 	"strings"
+
+	"github.com/apex/log"
 )
 
 // parse description and extract playlist, YCKM edition
@@ -198,7 +199,7 @@ func parseLaPifothequePlaylist(title string) []song {
 	// (2)
 	s, err := getAlbumsFromCSV(epifode)
 	if err != nil {
-		fmt.Println(err)
+		log.Error(err.Error())
 		return nil
 	}
 

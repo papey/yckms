@@ -6,11 +6,11 @@ import (
 	"fmt"
 	"image/jpeg"
 	"io"
-	"log"
 	"net/http"
 	"sort"
 	"time"
 
+	"github.com/apex/log"
 	"github.com/araddon/dateparse"
 	"github.com/mmcdole/gofeed"
 	"github.com/nfnt/resize"
@@ -205,7 +205,7 @@ func createShows(feed *gofeed.Feed, last bool, from string, to string) ([]*show,
 
 		// if a warning is set, print it
 		if ret.w != "" {
-			fmt.Println(ret.w)
+			log.Warn(ret.w)
 		}
 	}
 
@@ -229,7 +229,7 @@ func createImage(url string) (io.Reader, error) {
 	// decode jpeg into image.Image
 	img, err := jpeg.Decode(res.Body)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal(err.Error())
 	}
 
 	m := resize.Resize(300, 0, img, resize.Lanczos3)

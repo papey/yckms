@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
+
+	"github.com/apex/log"
+	loghandler "github.com/apex/log/handlers/cli"
 
 	internal "github.com/papey/yckms/internal/app"
 	"github.com/urfave/cli"
@@ -16,7 +18,10 @@ func main() {
 	// Basic config
 	app.Name = "YCKMS"
 	app.Usage = "Sync playlists from frech metal podcasts shows to Spotify"
-	app.Version = "0.1.2-1"
+	app.Version = "0.1.3"
+
+	// logs setup
+	logsSetup()
 
 	// Flags
 	app.Flags = []cli.Flag{
@@ -73,7 +78,24 @@ func main() {
 	// Run
 	err := app.Run(os.Args)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal(err.Error())
+	}
+
+}
+
+// logsSetup is used to set up logs from environment variable
+func logsSetup() {
+
+	// choose log type
+	log.SetHandler(loghandler.Default)
+	// loglevel
+	loglvl := os.Getenv("LOGLEVEL")
+	if loglvl == "" {
+		log.SetLevelFromString("INFO")
+		log.Warn("No log level environment variable configured, defaulted to INFO")
+	} else {
+		log.SetLevelFromString(loglvl)
+		log.Info("Log level set")
 	}
 
 }
