@@ -20,9 +20,6 @@ func main() {
 	app.Usage = "Sync playlists from frech metal podcasts shows to Spotify"
 	app.Version = "0.1.3"
 
-	// logs setup
-	logsSetup()
-
 	// Flags
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
@@ -49,6 +46,9 @@ func main() {
 		if c.NArg() != 1 {
 			log.Fatal("Error: RSS feed URL argument is missing")
 		}
+
+		// logs setup
+		logsSetup()
 
 		if c.Bool("date") && c.Bool("last") {
 			fmt.Println("Warning: from, to and last flags set, last will be used")
