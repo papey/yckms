@@ -121,6 +121,10 @@ func createShow(item *gofeed.Item, name string, id int, pipe chan showResult) {
 	var err error
 
 	parser := InitParse(name, item.Title, item.ITunesExt.Summary)
+	if parser == nil {
+		log.Fatal("Show not supported")
+	}
+
 	songs = parser.parse()
 
 	if songs == nil {
