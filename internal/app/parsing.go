@@ -7,6 +7,27 @@ import (
 	"github.com/apex/log"
 )
 
+// Parser interface
+type Parser interface {
+	// parse is used to get list of song from show
+	parse() []song
+}
+
+// YCKM is used for show YCKM
+type YCKM struct {
+	// podcast name
+	name string
+	// podcast title
+	title string
+	// podcast description
+	desc string
+}
+
+// NewYCKM inits a YCKM struct
+func NewYCKM(name string, title string, desc string) YCKM {
+	return YCKM{name: name, title: title, desc: desc}
+}
+
 // parse description and extract playlist, YCKM edition
 // Input exemple :
 // 		<p>Au programme :</p>
@@ -29,7 +50,7 @@ import (
 // 		An array containing each combo Artist / Song
 // Third step (3) :
 //		A song object
-func parseYCKMPlaylist(desc string) []song {
+func (y YCKM) parse() []song {
 
 	// is playlist found ?
 	var found bool = false
@@ -40,7 +61,7 @@ func parseYCKMPlaylist(desc string) []song {
 	var s []song
 
 	// Split on carriage return
-	split := strings.Split(desc, "\n")
+	split := strings.Split(y.desc, "\n")
 
 	// ensure split is ok
 	if len(split) == 0 {
@@ -108,18 +129,33 @@ func parseYCKMPlaylist(desc string) []song {
 
 }
 
+// LB is used for show Le Bruit
+type LB struct {
+	// podcast name
+	name string
+	// podcast title
+	title string
+	// podcast description
+	desc string
+}
+
+// NewLB inits a LB struct
+func NewLB(name string, title string, desc string) LB {
+	return LB{name: name, title: title, desc: desc}
+}
+
 // parse description and extract playlist, Le Bruit edition
 // First step (1), split on \n
 // Second step (2), isolate lines containing 💀 or 🐻
 // (3) regex on line to get Artist and Song
-func parseLeBruitPlaylist(desc string) []song {
+func (l LB) parse() []song {
 
 	// some local vars
 	var songs []song
 	found := false
 
 	// (1)
-	split := strings.Split(desc, "\n")
+	split := strings.Split(l.desc, "\n")
 
 	for _, elem := range split {
 		// (2)
@@ -144,18 +180,33 @@ func parseLeBruitPlaylist(desc string) []song {
 
 }
 
+// HC show is used for show Harry Cover
+type HC struct {
+	// podcast name
+	name string
+	// podcast title
+	title string
+	// podcast description
+	desc string
+}
+
+// NewHC inits a HC struct
+func NewHC(name string, title string, desc string) HC {
+	return HC{name: name, title: title, desc: desc}
+}
+
 // parse description and extract playlist, HarryCover edition
 // First step (1), split on \n
 // Second step (2), isolate lines containing original version and cover version
 // Third step (3), get Spotify ID from URL
-func parseHarryCoverPlaylist(desc string) []song {
+func (hc HC) parse() []song {
 
 	// some local vars
 	var songs []song
 	found := false
 
 	// (1)
-	split := strings.Split(desc, "\n")
+	split := strings.Split(hc.desc, "\n")
 
 	for _, elem := range split {
 		// (2)
@@ -177,17 +228,32 @@ func parseHarryCoverPlaylist(desc string) []song {
 
 }
 
+// Pifo is used for La Pifothèque show
+type Pifo struct {
+	// podcast name
+	name string
+	// podcast title
+	title string
+	// podcast description
+	desc string
+}
+
+// NewPifo inits a HC struct
+func NewPifo(name string, title string, desc string) Pifo {
+	return Pifo{name: name, title: title, desc: desc}
+}
+
 // parse description and extract playlist, Le Pifothèque edition
 // (1) extract epifode number
 // (2) get albums from CSV
-func parseLaPifothequePlaylist(title string) []song {
+func (p Pifo) parse() []song {
 
 	// Local var containing epifode number
 	var epifode string
 
 	reg := regexp.MustCompile(`^La Pifothèque ?[-]?[ ]Epifode (\d+)`)
 
-	res := reg.FindSubmatch([]byte(title))
+	res := reg.FindSubmatch([]byte(p.title))
 
 	// Little hack to get the first epifode
 	if len(res) >= 2 {
@@ -204,4 +270,20 @@ func parseLaPifothequePlaylist(title string) []song {
 	}
 
 	return s
+}
+
+// InitParse inits a parser using it's name
+func InitParse(name, title, desc string) Parser {
+	switch name {
+	case "YCKM":
+		return NewYCKM(name, title, desc)
+	case "Le Bruit":
+		return NewLB(name, title, desc)
+	case "Harry Cover, le podcast des meilleures reprises":
+		return NewHC(name, title, desc)
+	case "La Pifothèque":
+		return NewPifo(name, title, desc)
+	default:
+		return nil
+	}
 }

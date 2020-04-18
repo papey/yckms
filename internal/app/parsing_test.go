@@ -15,7 +15,8 @@ Playlist : Bus / I Buried Paul, Nails / Endless Resistance, Sepultura / Territor
 	artistExpected := "Bus"
 	songExpected := "Territory"
 
-	s := parseYCKMPlaylist(input)
+	yckm := NewYCKM("YCKM", "Test", input)
+	s := yckm.parse()
 	if s == nil {
 		t.FailNow()
 	}
@@ -100,7 +101,8 @@ Ausha (https://podcast.ausha.co/le-bruit), Youtube (https://www.youtube.com/chan
 	artistExpected := "Flight of the Conchords"
 	albumExpected := "Spiritual Instinct"
 
-	s := parseLeBruitPlaylist(input)
+	lb := NewLB("Le Bruit", "Test", input)
+	s := lb.parse()
 	if s == nil {
 		t.FailNow()
 	}
@@ -144,7 +146,8 @@ func TestParseHarryCoverPlaylist(t *testing.T) {
 
 	idExpected := "390AWnOn2rfe9FzQjYmxIH"
 
-	s := parseHarryCoverPlaylist(input)
+	hc := NewHC("HC", "Test", input)
+	s := hc.parse()
 	if s == nil {
 		t.FailNow()
 	}

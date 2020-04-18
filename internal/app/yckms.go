@@ -120,18 +120,8 @@ func createShow(item *gofeed.Item, name string, id int, pipe chan showResult) {
 	var songs []song
 	var err error
 
-	switch name {
-	case "YCKM":
-		songs = parseYCKMPlaylist(item.ITunesExt.Summary)
-	case "Le Bruit":
-		songs = parseLeBruitPlaylist(item.ITunesExt.Summary)
-	case "Harry Cover, le podcast des meilleures reprises":
-		songs = parseHarryCoverPlaylist(item.ITunesExt.Summary)
-	case "La Pifothèque":
-		songs = parseLaPifothequePlaylist(item.Title)
-	default:
-		log.Fatal("Show not supported")
-	}
+	parser := InitParse(name, item.Title, item.ITunesExt.Summary)
+	songs = parser.parse()
 
 	if songs == nil {
 		// not an error, but no show created, send a warning
