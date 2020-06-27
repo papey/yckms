@@ -2,6 +2,8 @@ package app
 
 import (
 	"testing"
+
+	"github.com/tj/assert"
 )
 
 func TestParseYCKMPlaylist(t *testing.T) {
@@ -21,13 +23,9 @@ Playlist : Bus / I Buried Paul, Nails / Endless Resistance, Sepultura / Territor
 		t.FailNow()
 	}
 
-	if s[0].artist != artistExpected {
-		t.Errorf("Expected : %s, Get : %s", artistExpected, s[0].artist)
-	}
+	assert.Equal(t, artistExpected, s[0].artist)
 
-	if s[2].title != songExpected {
-		t.Errorf("Expected : %s, Get : %s", songExpected, s[2].title)
-	}
+	assert.Equal(t, songExpected, s[2].title)
 
 }
 
@@ -107,13 +105,9 @@ Ausha (https://podcast.ausha.co/le-bruit), Youtube (https://www.youtube.com/chan
 		t.FailNow()
 	}
 
-	if s[0].artist != artistExpected {
-		t.Errorf("Expected : %s, Get : %s", artistExpected, s[0].artist)
-	}
+	assert.Equal(t, artistExpected, s[0].artist)
 
-	if s[3].album != albumExpected {
-		t.Errorf("Expected : %s, Get : %s", albumExpected, s[3].album)
-	}
+	assert.Equal(t, albumExpected, s[3].album)
 
 }
 
@@ -152,8 +146,6 @@ func TestParseHarryCoverPlaylist(t *testing.T) {
 		t.FailNow()
 	}
 
-	if s[0].id != idExpected {
-		t.Errorf("Expected : %s, Get : %s", idExpected, s[0].id)
-	}
+	assert.Equal(t, idExpected, s[0].id)
 
 }
