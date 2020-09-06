@@ -162,7 +162,7 @@ func (l LB) parse() []song {
 		if strings.Contains(elem, "💀") || strings.Contains(elem, "🐻") {
 			found = true
 			// (3)
-			reg := regexp.MustCompile(`^(?:💀|🐻) \(\d+:\d+:\d+\) (.*) - (.*) (\(\d+\) )?\([Ecouter|\d+].*`)
+			reg := regexp.MustCompile(`\s*(?:💀|🐻) \(\d+:\d+:\d+\) (.*) - (.*) (\(\d+\) )?\([Ecouter|\d+].*`)
 			// res[1] contains Artist, res[2] contains Title
 			res := reg.FindSubmatch([]byte(elem))
 			if len(res) >= 2 {
