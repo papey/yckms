@@ -26,7 +26,7 @@ Get deps using go mod
 go mod vendor
 ```
 
-then buld
+then build
 
 ```sh
 cd cmd
