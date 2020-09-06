@@ -279,7 +279,7 @@ func InitParse(name, title, desc string) Parser {
 		return NewYCKM(name, title, desc)
 	case "Le Bruit":
 		return NewLB(name, title, desc)
-	case "Recoversion (ex Harry Cover), le podcast des meilleures reprises":
+	case "Recoversion, le Podcast des Meilleures Reprises":
 		return NewHC(name, title, desc)
 	case "La Pifothèque":
 		return NewPifo(name, title, desc)
