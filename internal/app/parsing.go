@@ -13,8 +13,8 @@ type Parser interface {
 	parse() []song
 }
 
-// YCKM is used for show YCKM
-type YCKM struct {
+// YCKMOrSaccage is used for show YCKM
+type YCKMOrSaccage struct {
 	// podcast name
 	name string
 	// podcast title
@@ -23,9 +23,9 @@ type YCKM struct {
 	desc string
 }
 
-// NewYCKM inits a YCKM struct
-func NewYCKM(name string, title string, desc string) YCKM {
-	return YCKM{name: name, title: title, desc: desc}
+// NewYCKMOrSaccage inits a YCKM or Saccage struct since the share the same format
+func NewYCKMOrSaccage(name string, title string, desc string) YCKMOrSaccage {
+	return YCKMOrSaccage{name: name, title: title, desc: desc}
 }
 
 // parse description and extract playlist, YCKM edition
@@ -50,7 +50,7 @@ func NewYCKM(name string, title string, desc string) YCKM {
 // 		An array containing each combo Artist / Song
 // Third step (3) :
 //		A song object
-func (y YCKM) parse() []song {
+func (y YCKMOrSaccage) parse() []song {
 
 	// is playlist found ?
 	var found bool = false
@@ -276,7 +276,9 @@ func (p Pifo) parse() []song {
 func InitParse(name, title, desc string) Parser {
 	switch name {
 	case "YCKM":
-		return NewYCKM(name, title, desc)
+		return NewYCKMOrSaccage(name, title, desc)
+	case "SACCAGE":
+		return NewYCKMOrSaccage(name, title, desc)
 	case "Le Bruit":
 		return NewLB(name, title, desc)
 	case "Recoversion, le Podcast des Meilleures Reprises":
