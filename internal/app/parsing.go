@@ -118,6 +118,9 @@ func (y YCKMOrSaccage) parse() []song {
 	// for each song
 	for _, e := range songs {
 		elem := strings.Split(e, "/")
+		if len(elem) == 1 {
+			elem = strings.Split(e, " - ")
+		}
 		// TRIM, just to be sure
 		if len(elem) >= 2 {
 			song := song{title: strings.Trim(elem[1], " "), artist: strings.Trim(elem[0], " "), album: "", id: ""}
