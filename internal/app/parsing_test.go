@@ -149,3 +149,42 @@ func TestParseHarryCoverPlaylist(t *testing.T) {
 	assert.Equal(t, idExpected, s[0].id)
 
 }
+
+func TestFormatAushaDesc(t *testing.T) {
+	input := `<p>💀 (0:11:00) 5. <a href="https://album.link/fr/i/1531355546"><u>I Am The Avalanche - Dive</u></a></p>
+<p>🐻 (0:19:00) 5. <a href="https://album.link/fr/i/1529507727"><u>Red City Radio - Paradise</u></a></p>
+<p>💀 (0:27:20) 4. <a href="https://album.link/fr/i/1506854845"><u>Violent Soho - Everything is-a-ok</u></a></p>
+<p>🐻 (0:37:39) 4. <a href="https://album.link/fr/i/1509561427"><u>Cytotoxin - Nuklearth</u></a></p>
+<p>💀 (0:48:30) 3. <a href="https://album.link/fr/i/1529132855"><u>Dragged Under - The world is in your way</u></a></p>
+<p>🐻 (0:56:40) 3. <a href="https://album.link/fr/i/1529094453"><u>Melted Bodies - Enjoy Yourself</u></a></p>
+<p>💀 (1:09:40) 2. <a href="https://album.link/fr/i/1522543172"><u>Mother’s Cake - Cyberfunk</u></a></p>
+<p>🐻 (1:18:06) 2. <a href="https://album.link/us/i/1541568651"><u>Lucid Planet - II</u></a></p>
+<p>💀 (1:34:15) 1. <a href="https://album.link/s/1HmWQo43Gt8BR2dylfv3o4"><u>Oliver tree - Ugly is beautiful</u></a></p>
+<p>🐻 (1:49:49) 1. <a href="https://album.link/s/26TeqFz1sPbJT6VjAbBtzl"><u>The Ocean - Phanerozoic II: Mesozoic | Cenozoic</u></a></p>`
+
+	expected := `💀 (0:11:00) 5. I Am The Avalanche - Dive
+
+🐻 (0:19:00) 5. Red City Radio - Paradise
+
+💀 (0:27:20) 4. Violent Soho - Everything is-a-ok
+
+🐻 (0:37:39) 4. Cytotoxin - Nuklearth
+
+💀 (0:48:30) 3. Dragged Under - The world is in your way
+
+🐻 (0:56:40) 3. Melted Bodies - Enjoy Yourself
+
+💀 (1:09:40) 2. Mother’s Cake - Cyberfunk
+
+🐻 (1:18:06) 2. Lucid Planet - II
+
+💀 (1:34:15) 1. Oliver tree - Ugly is beautiful
+
+🐻 (1:49:49) 1. The Ocean - Phanerozoic II: Mesozoic | Cenozoic
+`
+
+	out := formatAushaDesc(input)
+
+	assert.Equal(t, expected, out)
+
+}

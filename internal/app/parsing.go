@@ -61,7 +61,7 @@ func (y YCKMOrSaccage) parse() []song {
 	var s []song
 
 	// Split on carriage return
-	split := strings.Split(y.desc, "\n")
+	split := strings.Split(y.desc, "\n\n")
 
 	// ensure split is ok
 	if len(split) == 0 {
@@ -163,13 +163,20 @@ func (l LB) parse() []song {
 	for _, elem := range split {
 		// (2)
 		if strings.Contains(elem, "💀") || strings.Contains(elem, "🐻") {
+			// most complex to simple one
+			regexs := []string{
+				`\s*(?:💀|🐻) \(\d+:\d+:\d+\) (.*) - (.*) (\(\d+\) )?\([Ecouter|\d+].*`,
+				`\s*(?:💀|🐻) \(\d+:\d+:\d+\) \d+\. (.*) - (.*)`,
+				`\s*(?:💀|🐻)(.*) - (.*)`,
+			}
 			found = true
-			// (3)
-			reg := regexp.MustCompile(`\s*(?:💀|🐻) \(\d+:\d+:\d+\) (.*) - (.*) (\(\d+\) )?\([Ecouter|\d+].*`)
-			// res[1] contains Artist, res[2] contains Title
-			res := reg.FindSubmatch([]byte(elem))
-			if len(res) >= 2 {
-				songs = append(songs, song{artist: string(res[1]), album: strings.Trim(string(res[2]), ""), title: "", id: ""})
+			for _, reg := range regexs {
+				r := regexp.MustCompile(reg)
+				res := r.FindSubmatch([]byte(elem))
+				if len(res) >= 2 {
+					songs = append(songs, song{artist: string(res[1]), album: strings.Trim(string(res[2]), ""), title: "", id: ""})
+					break
+				}
 			}
 		}
 	}
@@ -254,7 +261,7 @@ func (p Pifo) parse() []song {
 	// Local var containing epifode number
 	var epifode string
 
-	reg := regexp.MustCompile(`^La Pifothèque ?[-]?[ ]Epifode (\d+)`)
+	reg := regexp.MustCompile(`.*Epifode (\d+)`)
 
 	res := reg.FindSubmatch([]byte(p.title))
 
@@ -279,16 +286,23 @@ func (p Pifo) parse() []song {
 func InitParse(name, title, desc string) Parser {
 	switch name {
 	case "YCKM":
-		return NewYCKMOrSaccage(name, title, desc)
+		return NewYCKMOrSaccage(name, title, formatAushaDesc(desc))
 	case "SACCAGE":
-		return NewYCKMOrSaccage(name, title, desc)
+		return NewYCKMOrSaccage(name, title, formatAushaDesc(desc))
 	case "Le Bruit":
-		return NewLB(name, title, desc)
+		return NewLB(name, title, formatAushaDesc(desc))
 	case "Recoversion, le Podcast des Meilleures Reprises":
 		return NewHC(name, title, desc)
 	case "La Pifothèque":
-		return NewPifo(name, title, desc)
+		return NewPifo(name, title, formatAushaDesc(desc))
 	default:
 		return nil
 	}
+}
+
+// formatAushaDesc will take an html input, remplace </p> with \n, and smash the rest
+// 🖕 Ausha
+func formatAushaDesc(in string) (out string) {
+	cleaner := regexp.MustCompile("<[^>]*>")
+	return string(cleaner.ReplaceAll([]byte(strings.ReplaceAll(in, "</p>", "\n")), []byte("")))
 }
