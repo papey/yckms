@@ -3,7 +3,7 @@ module github.com/papey/yckms
 go 1.12
 
 require (
-	github.com/PuerkitoBio/goquery v1.6.0 // indirect
+	github.com/PuerkitoBio/goquery v1.6.1 // indirect
 	github.com/andybalholm/cascadia v1.2.0 // indirect
 	github.com/apex/log v1.9.0
 	github.com/araddon/dateparse v0.0.0-20201001162425-8aadafed4dc4
@@ -21,15 +21,15 @@ require (
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
-	github.com/stretchr/testify v1.6.1
+	github.com/stretchr/testify v1.7.0
 	github.com/tj/assert v0.0.3
 	github.com/urfave/cli v1.22.5
-	github.com/zmb3/spotify v0.0.0-20200814173021-9bec46940cc0
-	golang.org/x/net v0.0.0-20201224014010-6772e930b67b // indirect
-	golang.org/x/oauth2 v0.0.0-20201208152858-08078c50e5b5 // indirect
-	golang.org/x/sys v0.0.0-20201223074533-0d417f636930 // indirect
-	golang.org/x/text v0.3.4 // indirect
+	github.com/zmb3/spotify v0.0.0-20201231194903-e2d01d9b8bd2
+	golang.org/x/net v0.0.0-20210119194325-5f4716e94777 // indirect
+	golang.org/x/oauth2 v0.0.0-20210113205817-d3ed898aa8a3 // indirect
+	golang.org/x/sys v0.0.0-20210119212857-b64e53b001e4 // indirect
+	golang.org/x/text v0.3.5 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
-	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776 // indirect
+	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 )
