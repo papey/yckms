@@ -82,24 +82,14 @@ func read(c []byte) (r [][]string, err error) {
 // get is used to extract 4 specific albums from the readed CSV file
 func get(r [][]string, epifode string) (a []song, err error) {
 
-	// Offset inside the CSV file
-	offset := 2
-
-	// Compute index of the first album for selected epifode
-	index := offset
-
-	// loop until matching is found
-	for r[index][3] != epifode {
-		index++
+	for i, line := range r {
+		if len(line) == 4 {
+			if line[3] == epifode {
+				a = append(a, song{artist: r[i][0], album: r[i][1], title: "", id: ""})
+			}
+		}
 	}
 
-	// Loop on 4 albums
-	for i := index; i < index+4; i++ {
-		// Add albums to list
-		a = append(a, song{artist: r[i][0], album: r[i][1], title: "", id: ""})
-	}
-
-	// Return album list
 	return a, err
 
 }
