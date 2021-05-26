@@ -108,6 +108,9 @@ func (y YCKMOrSaccage) parse() []song {
 
 	// Split by ", " (2)
 	songs := strings.Split(list, ", ")
+	if len(songs) <= 1 {
+		songs = strings.Split(list, ";")
+	}
 
 	// if playlist no so long, do not add anything, it's a special episode
 	// see https://podcast.ausha.co/yckm/yckm-beer-x-metal-burp-666-burp
