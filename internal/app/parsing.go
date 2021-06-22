@@ -84,17 +84,20 @@ func (y YCKMOrSaccage) parse() []song {
 			// Check length of submatch array
 			if len(pl) == 3 {
 				// If the second goup is empty
-				if strings.TrimSpace(string(pl[2])) == "" {
-					// Playlist is the next line
-					plst = split[i+1]
-				} else {
+				if strings.TrimSpace(string(pl[2])) != "" {
 					// Else, playlist is the last member of match array
 					plst = string(pl[2])
+					// Yay, we found something
+					goto found
+				}
+				// Playlist is the next non emtpy line
+				for j := i + 1; j < len(split); j++ {
+					if split[j] != "" {
+						plst = split[j]
+						goto found
+					}
 				}
 			}
-			// Yay, we found something
-			found = true
-			break
 		}
 
 	}
@@ -103,6 +106,7 @@ func (y YCKMOrSaccage) parse() []song {
 		return nil
 	}
 
+found:
 	// convert to string
 	list := string(plst)
 
