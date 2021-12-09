@@ -68,7 +68,7 @@ func (y YCKMOrSaccage) parse() []song {
 		return nil
 	}
 
-	reg, err := regexp.Compile(`(Playlist|PLAYLIST|Setlist)\s?:\s?(.+)?`)
+	reg, err := regexp.Compile(`(Playlist|PLAYLIST|Setlist|Liste de Jouage)\s?:\s?(.+)?`)
 	// preprare regex
 	if err != nil {
 		return nil
