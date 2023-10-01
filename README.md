@@ -42,7 +42,7 @@ go build ykcms.go
 
 1. Create a YCKMS application on [Spotify](https://developer.spotify.com/my-applications/) : https://developer.spotify.com/my-applications/
 2. Set `http://localhost:8080` as callback url (in order to use a different port see env var section bellow)
-3. Copy SPOTIFY_ID and SPOTIFY_SECRET
+3. Copy `SPOTIFY_ID` and `SPOTIFY_SECRET`
 
 #### Args, env and flags
 
@@ -50,18 +50,18 @@ YCKMS takes one arg, multiple env var and multiple flags
 
 - Env vars :
 
-  - SPOTIFY_ID : from oauth setup (3)
-  - SPOTIFY_SECRET : from oauth setup (3)
-  - HTTP_CALLBACK_PORT : change http callback port (default 8080)
-  - LOGLEVEL : change log level of the entiere application
+  - `SPOTIFY_ID` : from oauth setup (3)
+  - `SPOTIFY_SECRET` : from oauth setup (3)
+  - `HTTP_CALLBACK_PORT` : change http callback port (default 8080)
+  - `LOGLEVEL` : change log level of the all the application
 
 - Arguments :
 
   - The URL to the podcast [RSS Feed](https://feed.ausha.co/owAEhJ0qOPkb) (eg: https://feed.ausha.co/owAEhJ0qOPkb)
 
 - Flags :
-  - --last, -l : sync last show
-  - --date, -d : sync show from date --from to date --to (format YYYY-MM-DD)
+  - `--last`, `-l` : sync last show
+  - `--date`, `-d` : sync show from date --from to date --to (format YYYY-MM-DD)
 
 If no flag is provided, sync all
 
