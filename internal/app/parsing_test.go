@@ -17,7 +17,7 @@ Playlist : Bus / I Buried Paul, Nails / Endless Resistance, Sepultura / Territor
 	artistExpected := "Bus"
 	songExpected := "Territory"
 
-	yckm := NewYCKMOrSaccage("YCKM", "Test", input)
+	yckm := NewStuffWithMathieu("YCKM", "Test", input)
 	s := yckm.parse()
 	if s == nil {
 		t.FailNow()
