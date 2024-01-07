@@ -12,6 +12,7 @@ YCKMS currently supports :
 - [Harry Cover](https://anchor.fm/leotot8)
 - [La Pifothèque](https://podcast.ausha.co/la-pifotheque)
 - [Saccage](https://podcast.ausha.co/saccage)
+- [Return Trip](https://podcast.ausha.co/return-trip)
 
 ## Getting Started
 

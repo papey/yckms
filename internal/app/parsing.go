@@ -13,8 +13,8 @@ type Parser interface {
 	parse() []song
 }
 
-// YCKMOrSaccage is used for show YCKM
-type YCKMOrSaccage struct {
+// StuffWithMathieu is used for show YCKM
+type StuffWithMathieu struct {
 	// podcast name
 	name string
 	// podcast title
@@ -23,34 +23,41 @@ type YCKMOrSaccage struct {
 	desc string
 }
 
-// NewYCKMOrSaccage inits a YCKM or Saccage struct since the share the same format
-func NewYCKMOrSaccage(name string, title string, desc string) YCKMOrSaccage {
-	return YCKMOrSaccage{name: name, title: title, desc: desc}
+// NewStuffWithMathieu inits a YCKM or Saccage or Return Trip struct since they share the same format
+func NewStuffWithMathieu(name string, title string, desc string) StuffWithMathieu {
+	return StuffWithMathieu{name: name, title: title, desc: desc}
 }
 
 // parse description and extract playlist, YCKM edition
 // Input exemple :
-// 		<p>Au programme :</p>
-// 		<p>- Revue de presse : Matthieu</p>
-// 		<p>- Chronique Fidlar : Théo</p>
-// 		<p>- Chronique Waste Of Space Orchestra : Eline</p>
-// 		<p><br></p>
-// 		<p>Playlist : Bus / I Buried Paul, Nails / Endless Resistance, Sepultura /
-// 		Territory, Venom / Evilution Devilution, All Pigs Must Die / The Whip, Fidlar
-// 		/ Too Real, Obituary / Slowly We Rot, Wayfarer / Catcher, Waste of Space
-// 		Orchestra / Seeker's Reflection, Bat / Long Live the Lewd, Witchfinder /
-// 		Ouija, Gadget /Choice of a Lost Generation</p>
+//
+//	<p>Au programme :</p>
+//	<p>- Revue de presse : Matthieu</p>
+//	<p>- Chronique Fidlar : Théo</p>
+//	<p>- Chronique Waste Of Space Orchestra : Eline</p>
+//	<p><br></p>
+//	<p>Playlist : Bus / I Buried Paul, Nails / Endless Resistance, Sepultura /
+//	Territory, Venom / Evilution Devilution, All Pigs Must Die / The Whip, Fidlar
+//	/ Too Real, Obituary / Slowly We Rot, Wayfarer / Catcher, Waste of Space
+//	Orchestra / Seeker's Reflection, Bat / Long Live the Lewd, Witchfinder /
+//	Ouija, Gadget /Choice of a Lost Generation</p>
+//
 // First step (1) :
-// 		Bus / I Buried Paul, Nails / Endless Resistance, Sepultura /
-// 		Territory, Venom / Evilution Devilution, All Pigs Must Die / The Whip, Fidlar
-// 		/ Too Real, Obituary / Slowly We Rot, Wayfarer / Catcher, Waste of Space
-// 		Orchestra / Seeker's Reflection, Bat / Long Live the Lewd, Witchfinder /
-// 		Ouija, Gadget /Choice of a Lost Generation
+//
+//	Bus / I Buried Paul, Nails / Endless Resistance, Sepultura /
+//	Territory, Venom / Evilution Devilution, All Pigs Must Die / The Whip, Fidlar
+//	/ Too Real, Obituary / Slowly We Rot, Wayfarer / Catcher, Waste of Space
+//	Orchestra / Seeker's Reflection, Bat / Long Live the Lewd, Witchfinder /
+//	Ouija, Gadget /Choice of a Lost Generation
+//
 // Second step (2) :
-// 		An array containing each combo Artist / Song
+//
+//	An array containing each combo Artist / Song
+//
 // Third step (3) :
-//		A song object
-func (y YCKMOrSaccage) parse() []song {
+//
+//	A song object
+func (y StuffWithMathieu) parse() []song {
 
 	// is playlist found ?
 	var found bool = false
@@ -83,7 +90,6 @@ func (y YCKMOrSaccage) parse() []song {
 		if len(pl) >= 1 {
 			// Check length of submatch array
 			if len(pl) == 3 {
-				// If the second goup is empty
 				if strings.TrimSpace(string(pl[2])) != "" {
 					// Else, playlist is the last member of match array
 					plst = string(pl[2])
@@ -92,6 +98,7 @@ func (y YCKMOrSaccage) parse() []song {
 				}
 				// Playlist is the next non emtpy line
 				for j := i + 1; j < len(split); j++ {
+					// If the second group is empty
 					if split[j] != "" {
 						plst = split[j]
 						goto found
@@ -293,9 +300,11 @@ func (p Pifo) parse() []song {
 func InitParse(name, title, desc string) Parser {
 	switch name {
 	case "YCKM":
-		return NewYCKMOrSaccage(name, title, formatAushaDesc(desc))
+		return NewStuffWithMathieu(name, title, formatAushaDesc(desc))
 	case "SACCAGE":
-		return NewYCKMOrSaccage(name, title, formatAushaDesc(desc))
+		return NewStuffWithMathieu(name, title, formatAushaDesc(desc))
+	case "Return Trip":
+		return NewStuffWithMathieu(name, title, formatAushaDesc(desc))
 	case "Le Bruit":
 		return NewLB(name, title, formatAushaDesc(desc))
 	case "Recoversion, le Podcast des Meilleures Reprises":
